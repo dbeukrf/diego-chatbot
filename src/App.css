@@ -67,7 +67,7 @@
   font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-size: 8px;
   line-height: 1;
-  color: #81A9EE;
+  color: #BB9BF7;
   margin: 0;
   padding: 0;
   white-space: pre;
@@ -154,26 +154,16 @@
   line-height: 1.4;
 }
 
-.message.response,
-.message.system {
-  flex-direction: column;
-}
-
-.message.response .system-prompt,
-.message.system .system-prompt {
-  margin-bottom: 4px;
-}
-
 .message.command {
   color: #D7FFF1;
 }
 
 .message.response {
-  color: #81A9EE;
+  color: #BB9BF7;
 }
 
 .message.system {
-  color: #81A9EE;
+  color: #BB9BF7;
 }
 
 /* Prompts */
@@ -201,11 +191,11 @@
 /* Response prompt now uses system-prompt styling */
 
 .system-prompt {
-  color: #81A9EE;
+  color: #BB9BF7;
   font-weight: bold;
   margin-right: 8px;
   flex-shrink: 0;
-  text-shadow: 0 0 5px #81A9EE, 0 0 10px #81A9EE;
+  text-shadow: 0 0 5px #BB9BF7, 0 0 10px #BB9BF7;
   display: flex;
   align-items: center;
 }
@@ -219,9 +209,11 @@
   line-height: 1.4;
 }
 
+/* AI DJ responses with tab spacing */
+.message.system .content,
 .message.response .content {
-  margin-left: 0;
-  margin-top: 4px;
+  text-indent: 1em;
+  padding-left: 0;
 }
 
 .timestamp {

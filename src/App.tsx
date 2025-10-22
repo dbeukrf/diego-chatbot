@@ -21,7 +21,7 @@ function App() {
     {
       id: 0,
       type: 'system',
-      content: 'AI DJ - Career Navigator & Talent Curator\n\nWelcome! I\'m here to help showcase Diego Beuk\'s professional journey and skills.\n\nType "help" to see available commands, or just start chatting!',
+      content: 'Welcome! I\'m here to help showcase Diego Beuk\'s professional journey and skills!\n\nType "help" to see available commands, or just start chatting!',
       timestamp: new Date()
     }
   ])
@@ -29,6 +29,7 @@ function App() {
   const [commandHistory, setCommandHistory] = useState<string[]>([])
   const [historyIndex, setHistoryIndex] = useState(-1)
   const [isLoading, setIsLoading] = useState(false)
+  const [isCleared, setIsCleared] = useState(false)
   const terminalRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -100,17 +101,12 @@ function App() {
 
     switch (cmd.toLowerCase()) {
       case 'help':
-        return `AI DJ Commands:
-
-1. help                    - Show this help message
-2. spin-profile            - Generate a recruiter-ready summary of Diego's profile
-3. amplify <skill>         - Expand on a specific skill with examples
-4. career-mix-analysis <job> - Compare Diego's skills with target job roles
-5. chat <message>          - Chat with AI DJ about Diego's background
-6. ingest                  - Ingest documents into the database
-7. clear                   - Clear the terminal
-8. status                  - Show system status
-9. exit                    - Exit the application
+        return `
+1. help -                               - Show a numbered list of available commands
+2. spin-profile                         - Generate a quick summary of Diego's professional journey
+3. amplify <skill>                      - Expand on a specific skill with examples
+4. career-analysis <job>                - Compare Diego's skills with a target job role
+5. clear                                - Clear terminal
 
 💡 Tip: You can also just type naturally - I'll help you explore Diego's career journey!`
 
@@ -190,12 +186,8 @@ function App() {
         }
 
       case 'clear':
-        setMessages([{
-          id: 0,
-          type: 'system',
-          content: 'AI DJ - Career Navigator & Talent Curator\n\nWelcome! I\'m here to help showcase Diego Beuk\'s professional journey and skills.\n\nType "help" to see available commands, or just start chatting!',
-          timestamp: new Date()
-        }])
+        setMessages([])
+        setIsCleared(true)
         return ''
 
       case 'status':
@@ -265,7 +257,7 @@ function App() {
           ) : error ? (
             <div className="header-content">
               <span className="error-text">Error loading ASCII art</span>
-              <span className="title-text">AI DJ - Career Navigator & Talent Curator</span>
+              <span className="title-text">Career Navigator & Talent Curator</span>
             </div>
           ) : (
             <div className="header-content">
@@ -277,7 +269,7 @@ function App() {
                   scrollMode={true}
                 />
               </div>
-              <span className="title-text">AI DJ - Career Navigator & Talent Curator</span>
+              <span className="title-text">Career Navigator & Talent Curator</span>
             </div>
           )}
         </div>
@@ -298,19 +290,19 @@ function App() {
                 <span className="separator">$</span>
               </span>
             )}
-            {message.type === 'response' && (
-              <span className="system-prompt">AI DJ:</span>
+            {message.type === 'response' && !isCleared && (
+              <span className="system-prompt">AI DJ System:</span>
             )}
-            {message.type === 'system' && (
-              <span className="system-prompt">AI DJ:</span>
+            {message.type === 'system' && !isCleared && (
+              <span className="system-prompt">AI DJ System:</span>
             )}
             <span className="content">{message.content}</span>
-            <span className="timestamp">[{formatTimestamp(message.timestamp)}]</span>
+            {!(isCleared && (message.type === 'response' || message.type === 'system')) && <span className="timestamp">[{formatTimestamp(message.timestamp)}]</span>}
           </div>
         ))}
         {isLoading && (
           <div className="message system">
-            <span className="system-prompt">AI DJ:</span>
+            {!isCleared && <span className="system-prompt">AI DJ System:</span>}
             <span className="content">Processing...</span>
             <span className="loading-dots">...</span>
           </div>
