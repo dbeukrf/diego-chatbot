@@ -1,4 +1,4 @@
-# 🎭 AI DJ Terminal Demo
+# AI DJ Terminal Demo
 
 ## How to Use the AI DJ Terminal
 
@@ -20,7 +20,7 @@ Open http://localhost:5173 in your browser
 - `help` - Show all available commands
 - `spin-profile` - Generate Diego's recruiter-ready summary
 - `amplify Python` - Expand on Diego's Python skills
-- `career-mix-analysis Software Engineer` - Compare Diego's skills with a job role
+- `career-analysis Software Engineer` - Compare Diego's skills with a job role
 
 #### Natural Conversation
 You can also just type naturally:
@@ -29,15 +29,13 @@ You can also just type naturally:
 - "How can Diego's experience help in product management?"
 
 #### System Commands
-- `ingest` - Load documents from the data folder
-- `status` - Check system status
 - `clear` - Clear the terminal
 - `exit` - Close the application
 
 ### 4. Example Session
 
 ```
-🎭 AI DJ - Career Navigator & Talent Curator
+AI DJ - Career Navigator & Talent Curator
 
 Welcome! I'm here to help showcase Diego Beuk's professional journey and skills.
 
@@ -45,7 +43,7 @@ Type "help" to see available commands, or just start chatting!
 
 user@aidj:~$ help
 
-🎭 AI DJ Commands:
+AI DJ Commands:
 
 1. help                    - Show this help message
 2. spin-profile            - Generate a recruiter-ready summary of Diego's profile
@@ -61,11 +59,11 @@ user@aidj:~$ help
 
 user@aidj:~$ spin-profile
 
-🎭 AI DJ: [Generates Diego's professional summary based on his documents]
+AI DJ: [Generates Diego's professional summary based on his documents]
 
 user@aidj:~$ What makes Diego unique as a developer?
 
-🎭 AI DJ: [Provides insights about Diego's unique qualities and strengths]
+AI DJ: [Provides insights about Diego's unique qualities and strengths]
 ```
 
 ### 5. Features

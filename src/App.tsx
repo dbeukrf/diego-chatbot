@@ -21,7 +21,7 @@ function App() {
     {
       id: 0,
       type: 'system',
-      content: 'Welcome! I\'m here to help showcase Diego Beuk\'s professional journey and skills!\n\nType "help" to see available commands, or just start chatting!',
+      content: 'Welcome! I\'m an AI DJ, here to help showcase Diego Beuk\'s professional journey and skills!\n\nType "help" to see available commands, or just start chatting with menaturally!',
       timestamp: new Date()
     }
   ])
@@ -110,19 +110,8 @@ function App() {
 4. career-analysis <job>                - Compare Diego's skills with a target job role
 5. clear                                - Clear terminal
 
-💡 Tip: You can also just type naturally - I'll help you explore Diego's career journey!`
+◽️ You can also just type naturally and I'll answer any of your questions about Diego!`
 
-      case 'ingest':
-        try {
-          const response = await fetch('/api/ingest', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' }
-          })
-          const result = await response.json()
-          return result.message || 'Documents ingested successfully!'
-        } catch (error) {
-          return 'Error ingesting documents. Make sure the backend is running.'
-        }
 
       case 'spin-profile':
         try {
@@ -154,9 +143,9 @@ function App() {
           return 'Error amplifying skill. Make sure the backend is running.'
         }
 
-      case 'career-mix-analysis':
+      case 'career-analysis':
         if (args.length === 0) {
-          return 'Usage: career-mix-analysis <job role>\nExample: career-mix-analysis Software Engineer\nExample: career-mix-analysis Product Manager'
+          return 'Usage: career-analysis <job role>\nExample: career-analysis AI Software Developer\nExample: career-analysis Product Manager'
         }
         try {
           const jobRole = args.join(' ')
@@ -168,34 +157,15 @@ function App() {
           const result = await response.json()
           return result.response || 'No response received'
         } catch (error) {
-          return 'Error analyzing career mix. Make sure the backend is running.'
-        }
-
-      case 'chat':
-        if (args.length === 0) {
-          return 'Usage: chat <message>\nOr just type your message directly!'
-        }
-        try {
-          const response = await fetch('/api/chat', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: args.join(' ') })
-          })
-          const result = await response.json()
-          return result.response || 'No response received'
-        } catch (error) {
-          return 'Error chatting with AI DJ. Make sure the backend is running.'
+          return 'Error analysing career analysis. Make sure the backend is running.'
         }
 
       case 'clear':
         setMessages([])
         return ''
 
-      case 'status':
-        return `System Status:
-  Backend: ${await checkBackendStatus() ? 'Connected' : 'Disconnected'}
-  Database: ${await checkDatabaseStatus() ? 'Ready' : 'Not Ready'}
-  Documents: ${await getDocumentCount()} documents loaded`
+      case 'sudo':
+        return `secret command...`
 
       case 'exit':
         window.close()
@@ -217,44 +187,17 @@ function App() {
     }
   }
 
-  const checkBackendStatus = async (): Promise<boolean> => {
-    try {
-      const response = await fetch('/api/status')
-      return response.ok
-    } catch {
-      return false
-    }
-  }
-
-  const checkDatabaseStatus = async (): Promise<boolean> => {
-    try {
-      const response = await fetch('/api/db-status')
-      return response.ok
-    } catch {
-      return false
-    }
-  }
-
-  const getDocumentCount = async (): Promise<number> => {
-    try {
-      const response = await fetch('/api/doc-count')
-      const result = await response.json()
-      return result.count || 0
-    } catch {
-      return 0
-    }
-  }
-
   const formatTimestamp = (date: Date) => {
     return date.toLocaleTimeString()
   }
 
   return (
     <div className="terminal-container">
+      {/* Terminal Header */}
       <div className="terminal-header">
         <div className="terminal-title">
           {asciiLoading ? (
-            '🎭 AI DJ - Career Navigator & Talent Curator'
+            'Career Navigator & Talent Curator'
           ) : error ? (
             <div className="header-content">
               <span className="error-text">Error loading ASCII art</span>
@@ -262,6 +205,7 @@ function App() {
             </div>
           ) : (
             <div className="header-content">
+              <span className="title-text">Career Navigator & Talent Curator</span>
               <div className="ascii-container">
                 <AnimatedAscii 
                   frames={frames} 
@@ -270,16 +214,12 @@ function App() {
                   scrollMode={true}
                 />
               </div>
-              <span className="title-text">Career Navigator & Talent Curator</span>
             </div>
           )}
         </div>
-        <div className="terminal-controls">
-          <div className="control-btn close"></div>
-          <div className="control-btn minimize"></div>
-          <div className="control-btn maximize"></div>
-        </div>
       </div>
+
+      {/* Terminal Body */}
       <div className="terminal-body" ref={terminalRef}>
         {messages.map((message) => (
           <div key={message.id} className={`message ${message.type}`}>
@@ -292,10 +232,10 @@ function App() {
               </span>
             )}
             {message.type === 'response' && (
-              <span className="system-prompt">AI DJ System:</span>
+              <span className="system-prompt">system/ai.dj:</span>
             )}
             {message.type === 'system' && (
-              <span className="system-prompt">AI DJ System:</span>
+              <span className="system-prompt">system/ai.dj:</span>
             )}
             <span className="content">{message.content}</span>
             <span className="timestamp">[{formatTimestamp(message.timestamp)}]</span>
@@ -303,8 +243,8 @@ function App() {
         ))}
         {isLoading && (
           <div className="message system">
-            <span className="system-prompt">AI DJ System:</span>
-            <span className="content">Processing...</span>
+            <span className="system-prompt">system/ai.dj:</span>
+            <span className="content">...</span>
             <span className="loading-dots">...</span>
           </div>
         )}
