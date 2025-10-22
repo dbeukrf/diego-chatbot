@@ -29,7 +29,6 @@ function App() {
   const [commandHistory, setCommandHistory] = useState<string[]>([])
   const [historyIndex, setHistoryIndex] = useState(-1)
   const [isLoading, setIsLoading] = useState(false)
-  const [isCleared, setIsCleared] = useState(false)
   const terminalRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -88,7 +87,10 @@ function App() {
 
     try {
       const response = await handleCommand(command)
-      addMessage('response', response)
+      // Don't add empty responses (like from clear command)
+      if (response && response.trim() !== '') {
+        addMessage('response', response)
+      }
     } catch (error) {
       addMessage('response', `Error: ${error instanceof Error ? error.message : 'Unknown error'}`)
     } finally {
@@ -102,7 +104,7 @@ function App() {
     switch (cmd.toLowerCase()) {
       case 'help':
         return `
-1. help -                               - Show a numbered list of available commands
+1. help                                 - Show a numbered list of available commands
 2. spin-profile                         - Generate a quick summary of Diego's professional journey
 3. amplify <skill>                      - Expand on a specific skill with examples
 4. career-analysis <job>                - Compare Diego's skills with a target job role
@@ -187,7 +189,6 @@ function App() {
 
       case 'clear':
         setMessages([])
-        setIsCleared(true)
         return ''
 
       case 'status':
@@ -290,19 +291,19 @@ function App() {
                 <span className="separator">$</span>
               </span>
             )}
-            {message.type === 'response' && !isCleared && (
+            {message.type === 'response' && (
               <span className="system-prompt">AI DJ System:</span>
             )}
-            {message.type === 'system' && !isCleared && (
+            {message.type === 'system' && (
               <span className="system-prompt">AI DJ System:</span>
             )}
             <span className="content">{message.content}</span>
-            {!(isCleared && (message.type === 'response' || message.type === 'system')) && <span className="timestamp">[{formatTimestamp(message.timestamp)}]</span>}
+            <span className="timestamp">[{formatTimestamp(message.timestamp)}]</span>
           </div>
         ))}
         {isLoading && (
           <div className="message system">
-            {!isCleared && <span className="system-prompt">AI DJ System:</span>}
+            <span className="system-prompt">AI DJ System:</span>
             <span className="content">Processing...</span>
             <span className="loading-dots">...</span>
           </div>
