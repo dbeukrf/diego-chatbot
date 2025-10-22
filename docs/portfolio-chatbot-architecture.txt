@@ -1,0 +1,781 @@
+# Personal Portfolio Chatbot Architecture Document
+
+---
+
+## Introduction
+
+This document outlines the technical architecture for the Personal Portfolio Chatbot, a RAG-powered conversational interface for exploring a developer's portfolio. The architecture prioritizes simplicity, maintainability, and rapid development while demonstrating AI/ML technical capability.
+
+### Starter Template or Existing Project
+
+**Status:** N/A - Greenfield project
+
+This is a new project built from scratch. No starter template will be used. The application will be built directly with Streamlit's basic chat components and custom styling.
+
+**Rationale:** Streamlit provides sufficient built-in functionality for our needs. Using a starter template would add unnecessary complexity for this focused, single-page application.
+
+### Change Log
+
+| Date | Version | Description | Author |
+|------|---------|-------------|--------|
+| 2025-10-21 | 1.0 | Initial architecture document | Architect Winston |
+
+---
+
+## High Level Architecture
+
+### Technical Summary
+
+The Personal Portfolio Chatbot is a monolithic web application built with Streamlit, featuring a Retrieval-Augmented Generation (RAG) pipeline that grounds responses in personal documents. The system uses Llama 3 8B LLM for natural language understanding and generation, FAISS for efficient vector similarity search, and sentence-transformers for text embeddings.
+
+The architecture follows a three-layer pattern: UI Layer (Streamlit components with terminal styling), Application Layer (RAG orchestration and response formatting), and Data Layer (FAISS vector database and document store). All components run within a single Python process, simplifying deployment and state management.
+
+The system is stateless by design - no user accounts, no chat history persistence - ensuring privacy and operational simplicity. Responses are generated on-demand by retrieving relevant document chunks via semantic search, injecting them as context into the LLM prompt, and formatting the output according to personality guidelines.
+
+Key architectural decisions support the PRD's goals: terminal aesthetics signal technical credibility, RAG ensures factual accuracy, open-source components demonstrate full-stack capability, and free-tier deployment validates pragmatic engineering choices.
+
+### High Level Overview
+
+**Architectural Style:** Monolithic web application with embedded RAG pipeline
+
+**Repository Structure:** Monorepo - single repository contains all application code, documents, data, and tests
+
+**Service Architecture:** Single Streamlit application server handling UI rendering, request processing, and response generation in one process
+
+**Primary User Interaction Flow:**
+
+1. User visits chatbot URL → Streamlit loads and displays welcome message
+2. User types question in chat input → Streamlit captures input on Enter
+3. Application embeds query → FAISS retrieves relevant document chunks
+4. Retrieved context + system prompt + query → Llama LLM generates response
+5. Response formatted (bullets + storytelling) → displayed in terminal-styled UI
+6. Bot suggests related topics → user continues conversation or explores new direction
+
+**Data Flow:**
+
+```
+User Query 
+  ↓
+Query Embedding (sentence-transformers)
+  ↓
+Vector Similarity Search (FAISS)
+  ↓
+Retrieved Document Chunks
+  ↓
+Prompt Construction (system + context + query)
+  ↓
+LLM Generation (Llama 3)
+  ↓
+Response Formatting (bullets + storytelling + links)
+  ↓
+Terminal-Styled UI Rendering (Streamlit)
+  ↓
+Display to User
+```
+
+**Key Architectural Decisions:**
+
+1. **Streamlit over custom React/Vue:** Rapid development, built-in state management, Python-native (no frontend/backend split)
+2. **FAISS over cloud vector databases:** No external dependencies, free, sufficient for <1000 document chunks, local development friendly
+3. **Offline document preprocessing:** Documents → embeddings → FAISS index built once, loaded at runtime for fast queries
+4. **Stateless sessions:** No database, no user accounts, no persistence - simplifies architecture and ensures privacy
+5. **LLM via API over local inference:** HuggingFace Inference API free tier for production, local for development (avoids GPU requirements in deployment)
+
+### High Level Project Diagram
+
+```mermaid
+graph TB
+    User[User Browser] -->|HTTP| Streamlit[Streamlit App Server]
+    
+    Streamlit --> UI[UI Layer<br/>Terminal Components]
+    Streamlit --> App[Application Layer<br/>RAG Orchestration]
+    Streamlit --> Data[Data Layer<br/>FAISS + Documents]
+    
+    App --> Embed[Embedding Service<br/>sentence-transformers]
+    App --> Vector[Vector Search<br/>FAISS Index]
+    App --> LLM[LLM Service<br/>Llama 3 8B]
+    
+    Vector --> Index[(FAISS Index<br/>~500 chunks)]
+    Data --> Docs[(PDF Documents<br/>Resume, Projects, Notes)]
+    
+    LLM -.->|API Call| HF[HuggingFace<br/>Inference API]
+    
+    style User fill:#87CEEB
+    style Streamlit fill:#FFE4B5
+    style UI fill:#98FB98
+    style App fill:#98FB98
+    style Data fill:#98FB98
+    style Index fill:#DDA0DD
+    style Docs fill:#DDA0DD
+    style HF fill:#F0E68C
+```
+
+### Architectural and Design Patterns
+
+**1. Retrieval-Augmented Generation (RAG) Pattern**
+
+_Description:_ Enhance LLM responses by retrieving relevant external information and injecting it as context into prompts.
+
+_Rationale:_ Grounds responses in actual personal documents rather than generic LLM knowledge. Prevents hallucinations and ensures factual accuracy about the developer's background, skills, and projects. Essential for portfolio use case where accuracy matters.
+
+**2. Semantic Caching Pattern**
+
+_Description:_ Cache LLM responses keyed by query embedding similarity to avoid redundant generation.
+
+_Rationale:_ Common portfolio questions ("What technologies do you know?", "Tell me about your projects") are asked repeatedly. Caching reduces latency and LLM API costs while ensuring consistent responses.
+
+**3. Dependency Injection via Streamlit Session State**
+
+_Description:_ Load expensive resources (LLM client, FAISS index, embedding model) once and store in session state for reuse.
+
+_Rationale:_ Streamlit re-runs script on every interaction. Loading models repeatedly would cause unacceptable latency. Session state enables lazy loading on first query, then reuse for subsequent queries.
+
+**4. Command Pattern for Special Inputs**
+
+_Description:_ Parse input for special commands (/help, /projects) and route to command handlers instead of LLM.
+
+_Rationale:_ Instant responses for navigation commands improve UX. Bypassing LLM for deterministic outputs ensures reliability and reduces API usage for non-conversational requests.
+
+**5. Template Method Pattern for Response Formatting**
+
+_Description:_ Define response structure template (bullets + storytelling) in system prompt; LLM fills in content.
+
+_Rationale:_ Consistent response format without post-processing. LLM understands structure through prompt engineering, reducing code complexity and ensuring natural language flow.
+
+---
+
+## Tech Stack
+
+### Cloud Infrastructure
+
+- **Provider:** Not applicable for MVP (application is self-contained)
+- **Deployment Platform:** Streamlit Cloud (free tier) or HuggingFace Spaces (free tier)
+- **Key Services:** None required (no cloud storage, databases, or managed services)
+- **Deployment Regions:** US (default for chosen platforms)
+
+### Technology Stack Table
+
+| Category | Technology | Version | Purpose | Rationale |
+|----------|-----------|---------|---------|-----------|
+| **Language** | Python | 3.9+ | Primary development language | Required by Streamlit; excellent ML/AI library ecosystem; developer expertise |
+| **UI Framework** | Streamlit | 1.28+ | Web application framework | Rapid development; built-in chat components; Python-native; no frontend/backend split needed |
+| **LLM** | Llama 3 8B | Latest | Natural language understanding and generation | Open-source; strong performance; 8B size balances quality and speed; free via HF Inference API |
+| **Embedding Model** | sentence-transformers (all-MiniLM-L6-v2) | 2.2+ | Text embedding for semantic search | Fast inference; good quality; 384 dimensions (efficient); widely used and proven |
+| **Vector Database** | FAISS | 1.7+ | Similarity search for document retrieval | Fast; local (no external dependencies); free; sufficient for <1000 vectors; Facebook Research maintained |
+| **PDF Processing** | PyPDF2 | 3.0+ | Extract text from PDF documents | Simple API; reliable; no OCR needed for text-based PDFs |
+| **HTTP Client** | requests | 2.31+ | API calls to HuggingFace Inference API | Standard Python HTTP library; simple; reliable |
+| **Testing** | pytest | 7.4+ | Unit and integration testing | Industry standard; excellent fixtures; easy to learn |
+| **Type Checking** | mypy | 1.5+ (optional) | Static type checking | Catch bugs early; improve code quality; optional for MVP |
+| **Code Formatting** | black | 23.9+ | Automatic code formatting | Consistent style; no debates; industry standard |
+| **Linting** | ruff | 0.1+ | Fast Python linter | Extremely fast; replaces flake8, isort; excellent defaults |
+
+---
+
+## Data Models
+
+### DocumentChunk
+
+**Purpose:** Represents a semantically meaningful segment of a source document with metadata for retrieval and citation.
+
+**Key Attributes:**
+- `chunk_id`: str - Unique identifier (format: `{doc_name}_{chunk_index}`)
+- `text`: str - The actual text content (~1000 characters)
+- `embedding`: np.ndarray - 384-dimensional vector from sentence-transformers
+- `source_document`: str - Original PDF filename
+- `chunk_index`: int - Position in source document (0-indexed)
+- `char_start`: int - Starting character position in original document
+- `char_end`: int - Ending character position in original document
+
+**Relationships:**
+- Many DocumentChunks belong to one source PDF document
+- Each DocumentChunk has one embedding vector stored in FAISS index
+
+**Storage:** In-memory during processing; embeddings stored in FAISS index; metadata stored in pickle file alongside index
+
+---
+
+### ChatMessage
+
+**Purpose:** Represents a single message in the conversation (user query or bot response) for UI rendering.
+
+**Key Attributes:**
+- `role`: str - Either "user" or "assistant"
+- `content`: str - Message text (markdown formatted for bot responses)
+- `timestamp`: datetime - When message was created
+- `retrieved_chunks`: List[str] (optional) - Chunk IDs used for this response (for debugging)
+
+**Relationships:**
+- Messages are stored in Streamlit session state as a list
+- No persistence between sessions (stateless design)
+
+**Storage:** Streamlit session state (in-memory, cleared on page refresh)
+
+---
+
+### LLMPrompt
+
+**Purpose:** Structured prompt sent to Llama LLM containing system instructions, retrieved context, and user query.
+
+**Key Attributes:**
+- `system_prompt`: str - Personality and formatting instructions
+- `context_chunks`: List[str] - Retrieved document text for grounding
+- `user_query`: str - The actual question asked
+- `conversation_history`: List[ChatMessage] (optional) - Last 2-3 messages for context
+
+**Relationships:**
+- Constructed from DocumentChunk retrievals and user input
+- Generates one ChatMessage response
+
+**Storage:** Constructed dynamically per query; not persisted
+
+---
+
+## Components
+
+### UI Layer Component
+
+**Responsibility:** Render terminal-styled chat interface and handle user interactions.
+
+**Key Interfaces:**
+- `render_chat_interface()` → displays message history and input field
+- `apply_terminal_styling()` → injects custom CSS for terminal aesthetics
+- `display_welcome_message()` → shows intro with ASCII art
+- `handle_user_input(query: str)` → captures and validates user input
+
+**Dependencies:**
+- Streamlit framework for UI components
+- Application Layer for query processing
+- CSS file for terminal styling
+
+**Technology Stack:**
+- Streamlit UI components (`st.chat_message`, `st.chat_input`)
+- Custom CSS via `st.markdown(unsafe_allow_html=True)`
+- Session state for message history
+
+---
+
+### RAG Orchestration Component
+
+**Responsibility:** Coordinate document retrieval, prompt construction, and LLM generation.
+
+**Key Interfaces:**
+- `process_query(query: str) → str` - Main entry point for handling user queries
+- `retrieve_context(query: str) → List[DocumentChunk]` - Fetch relevant chunks
+- `construct_prompt(query: str, chunks: List[DocumentChunk]) → LLMPrompt` - Build LLM prompt
+- `generate_response(prompt: LLMPrompt) → str` - Call LLM and return response
+
+**Dependencies:**
+- Embedding Service for query vectorization
+- Vector Search Component for retrieval
+- LLM Service for generation
+- Response Formatter for output structuring
+
+**Technology Stack:**
+- Pure Python orchestration logic
+- sentence-transformers for embedding
+- FAISS for vector search
+- HuggingFace Inference API for LLM calls
+
+---
+
+### Embedding Service Component
+
+**Responsibility:** Convert text (queries and documents) into 384-dimensional vector embeddings.
+
+**Key Interfaces:**
+- `embed_text(text: str) → np.ndarray` - Single text embedding
+- `embed_batch(texts: List[str]) → np.ndarray` - Batch embedding for efficiency
+- `load_model()` - Initialize sentence-transformers model
+
+**Dependencies:**
+- sentence-transformers library
+- Pre-trained all-MiniLM-L6-v2 model
+
+**Technology Stack:**
+- sentence-transformers: all-MiniLM-L6-v2 model
+- Torch backend (CPU inference)
+- Caching via Streamlit session state
+
+---
+
+### Vector Search Component
+
+**Responsibility:** Perform semantic similarity search over document embeddings using FAISS.
+
+**Key Interfaces:**
+- `search(query_embedding: np.ndarray, k: int = 3) → List[DocumentChunk]` - Find k most similar chunks
+- `load_index(path: str)` - Load FAISS index from disk
+- `get_chunk_metadata(chunk_ids: List[str]) → List[Dict]` - Retrieve chunk details
+
+**Dependencies:**
+- FAISS library
+- Pre-built FAISS index file
+- Metadata pickle file mapping chunk IDs to DocumentChunk objects
+
+**Technology Stack:**
+- FAISS IndexFlatL2 (exact search)
+- NumPy for vector operations
+- Pickle for metadata serialization
+
+---
+
+### LLM Service Component
+
+**Responsibility:** Communicate with Llama 3 8B model via HuggingFace Inference API and handle generation.
+
+**Key Interfaces:**
+- `generate(prompt: LLMPrompt, max_tokens: int = 512) → str` - Generate response
+- `initialize_client(api_key: str)` - Set up HF API client
+- `handle_errors(error: Exception) → str` - Graceful error responses
+
+**Dependencies:**
+- HuggingFace Inference API
+- requests library for HTTP calls
+- Retry logic for transient failures
+
+**Technology Stack:**
+- HuggingFace Inference API (free tier)
+- Llama 3 8B model (meta-llama/Meta-Llama-3-8B-Instruct)
+- Fallback to local inference for development if needed
+
+---
+
+### Document Processing Component (Offline)
+
+**Responsibility:** Convert PDF documents into chunked, embedded, and indexed format ready for retrieval.
+
+**Key Interfaces:**
+- `process_pdfs(pdf_dir: str) → Tuple[FAISSIndex, Dict]` - Main processing pipeline
+- `extract_text(pdf_path: str) → str` - Extract text from PDF
+- `chunk_text(text: str, chunk_size: int = 1000, overlap: int = 200) → List[str]` - Split into chunks
+- `build_faiss_index(embeddings: np.ndarray) → FAISSIndex` - Create searchable index
+
+**Dependencies:**
+- PyPDF2 for PDF parsing
+- Embedding Service for vectorization
+- FAISS for index creation
+
+**Technology Stack:**
+- PyPDF2 for text extraction
+- sentence-transformers for embedding
+- FAISS for index building
+- Runs offline, not part of deployed app
+
+---
+
+### Response Formatter Component
+
+**Responsibility:** Format LLM output according to bullet points + storytelling structure and inject links.
+
+**Key Interfaces:**
+- `format_response(raw_response: str, link_metadata: Dict) → str` - Apply formatting rules
+- `inject_links(text: str, links: Dict) → str` - Add markdown links contextually
+- `validate_format(response: str) → bool` - Check if format is correct
+
+**Dependencies:**
+- Markdown parsing utilities
+- Link metadata (projects, resume, social profiles)
+
+**Technology Stack:**
+- Python string manipulation
+- Regular expressions for parsing
+- Markdown formatting
+
+---
+
+### Component Diagrams
+
+```mermaid
+graph TD
+    UI[UI Layer Component] --> RAG[RAG Orchestration Component]
+    
+    RAG --> Embed[Embedding Service]
+    RAG --> Vector[Vector Search Component]
+    RAG --> LLM[LLM Service Component]
+    RAG --> Format[Response Formatter]
+    
+    Vector --> FAISS[(FAISS Index)]
+    Vector --> Meta[(Chunk Metadata)]
+    
+    LLM --> HF[HuggingFace API]
+    
+    Offline[Document Processing<br/>Offline Component] -.->|builds| FAISS
+    Offline -.->|builds| Meta
+    
+    style UI fill:#98FB98
+    style RAG fill:#FFE4B5
+    style Embed fill:#87CEEB
+    style Vector fill:#87CEEB
+    style LLM fill:#87CEEB
+    style Format fill:#87CEEB
+    style Offline fill:#DDA0DD
+    style FAISS fill:#F0E68C
+    style Meta fill:#F0E68C
+```
+
+---
+
+## External APIs
+
+### HuggingFace Inference API
+
+- **Purpose:** Host and serve Llama 3 8B model for text generation without local GPU requirements
+- **Documentation:** https://huggingface.co/docs/api-inference/index
+- **Base URL:** `https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct`
+- **Authentication:** Bearer token (HF_API_KEY from environment variable)
+- **Rate Limits:** Free tier: ~30 requests/hour, 60 seconds timeout per request
+
+**Key Endpoints Used:**
+- `POST /models/{model_id}` - Generate text completion
+  - Request: `{"inputs": "prompt text", "parameters": {"max_new_tokens": 512, "temperature": 0.7}}`
+  - Response: `[{"generated_text": "response"}]`
+
+**Integration Notes:**
+- Retry logic with exponential backoff for transient failures
+- Fallback to local Llama inference for development/testing
+- Cache responses by query embedding hash to reduce API calls
+- Implement graceful degradation if API is unavailable ("I'm having trouble thinking right now, please try again")
+
+---
+
+## Core Workflows
+
+### User Query to Response Workflow
+
+```mermaid
+sequenceDiagram
+    actor User
+    participant UI as UI Layer
+    participant RAG as RAG Orchestrator
+    participant Embed as Embedding Service
+    participant FAISS as Vector Search
+    participant LLM as LLM Service
+    participant Format as Response Formatter
+    
+    User->>UI: Types question and hits Enter
+    UI->>UI: Validate input (not empty, not spam)
+    
+    alt Special Command (e.g. /help)
+        UI->>UI: Handle command directly
+        UI->>User: Display command response
+    else Regular Query
+        UI->>RAG: process_query(query)
+        
+        RAG->>Embed: embed_text(query)
+        Embed-->>RAG: query_embedding
+        
+        RAG->>FAISS: search(query_embedding, k=3)
+        FAISS-->>RAG: top 3 DocumentChunks
+        
+        RAG->>RAG: construct_prompt(query, chunks)
+        
+        RAG->>LLM: generate(prompt)
+        LLM->>LLM: Add "thinking" delay (1-2s)
+        LLM-->>RAG: raw_response
+        
+        RAG->>Format: format_response(raw_response)
+        Format-->>RAG: formatted_response (bullets + story + links)
+        
+        RAG-->>UI: final_response
+        UI->>UI: Add typing animation
+        UI->>User: Display formatted response
+        
+        UI->>User: Show topic suggestions
+    end
+```
+
+### Document Processing Workflow (Offline)
+
+```mermaid
+sequenceDiagram
+    participant Dev as Developer
+    participant Script as Processing Script
+    participant PDF as PyPDF2
+    participant Chunk as Chunker
+    participant Embed as Embedding Service
+    participant Index as FAISS Index Builder
+    
+    Dev->>Script: Run python scripts/build_index.py
+    
+    loop For each PDF in docs/
+        Script->>PDF: extract_text(pdf_path)
+        PDF-->>Script: raw_text
+        
+        Script->>Chunk: chunk_text(raw_text, size=1000, overlap=200)
+        Chunk-->>Script: List[chunk_text]
+        
+        Script->>Script: Create DocumentChunk objects with metadata
+    end
+    
+    Script->>Embed: embed_batch(all_chunks)
+    Embed-->>Script: embeddings array (N x 384)
+    
+    Script->>Index: build_faiss_index(embeddings)
+    Index-->>Script: FAISS index object
+    
+    Script->>Script: Save index to data/faiss_index.pkl
+    Script->>Script: Save metadata to data/chunk_metadata.pkl
+    
+    Script->>Dev: ✓ Index built successfully (N chunks)
+```
+
+---
+
+## REST API Spec
+
+**N/A:** This application does not expose a REST API. All interactions occur through the Streamlit UI, which handles HTTP requests internally. The only external API call is to HuggingFace Inference API (documented in External APIs section).
+
+---
+
+## Database Schema
+
+### FAISS Vector Index
+
+**Type:** FAISS IndexFlatL2 (L2 distance, exact search)
+
+**Structure:**
+- **Vectors:** N x 384 float32 matrix (N = number of document chunks, 384 = embedding dimensions)
+- **Index Type:** Flat (exact search, no approximation)
+- **Distance Metric:** L2 Euclidean distance
+- **Storage:** Serialized as `data/faiss_index.pkl`
+
+**Access Pattern:**
+- **Write:** Built offline once during document processing; rebuilt only when documents change
+- **Read:** Loaded into memory on first query; reused for all subsequent queries in session
+- **Search:** O(N) linear scan (acceptable for N < 1000 chunks)
+
+**Optimization Considerations:**
+- If N exceeds 1000 chunks, consider IndexIVFFlat with ~100 clusters for faster approximate search
+- Current flat index prioritizes accuracy over speed, suitable for portfolio use case
+
+---
+
+### Chunk Metadata Store
+
+**Type:** Python dictionary serialized with pickle
+
+**Structure:**
+```python
+{
+    "chunk_id": {
+        "text": str,              # Full chunk text
+        "source_document": str,   # PDF filename
+        "chunk_index": int,       # Position in document
+        "char_start": int,        # Character offset start
+        "char_end": int,          # Character offset end
+    },
+    ...
+}
+```
+
+**Storage:** `data/chunk_metadata.pkl`
+
+**Access Pattern:**
+- **Write:** Built offline during document processing
+- **Read:** Loaded into memory on application start; accessed via chunk IDs returned from FAISS
+
+**Size Estimate:** ~500 chunks × 1KB metadata = ~500KB total
+
+---
+
+### Session State (In-Memory)
+
+**Type:** Streamlit session state dictionary (Python dict)
+
+**Structure:**
+```python
+st.session_state = {
+    "messages": List[Dict],           # Chat history
+    "embedding_model": SentenceTransformer,  # Loaded model
+    "faiss_index": FAISSIndex,        # Loaded FAISS index
+    "chunk_metadata": Dict,           # Loaded metadata
+    "llm_client": LLMClient,          # HuggingFace API client
+    "cache": Dict[str, str],          # Query embedding hash → response
+}
+```
+
+**Lifecycle:** Created on first interaction; persists for user session; cleared on page refresh
+
+**Purpose:** Avoid reloading expensive resources (models, indices) on every Streamlit rerun
+
+---
+
+## Source Tree
+
+```
+portfolio-chatbot/
+├── app/
+│   ├── main.py                    # Streamlit app entry point
+│   ├── config.py                  # Configuration and constants
+│   │
+│   ├── ui/
+│   │   ├── __init__.py
+│   │   ├── chat_interface.py     # Chat UI rendering
+│   │   ├── styling.py            # Terminal CSS and animations
+│   │   └── welcome.py            # Welcome message and ASCII art
+│   │
+│   ├── rag/
+│   │   ├── __init__.py
+│   │   ├── orchestrator.py       # Main RAG pipeline coordinator
+│   │   ├── embeddings.py         # Embedding service wrapper
+│   │   ├── vector_search.py      # FAISS search interface
+│   │   └── retrieval.py          # Document chunk retrieval logic
+│   │
+│   ├── llm/
+│   │   ├── __init__.py
+│   │   ├── llm_client.py         # HuggingFace API client
+│   │   ├── prompts.py            # System prompt templates
+│   │   └── response_formatter.py # Response formatting logic
+│   │
+│   └── utils/
+│       ├── __init__.py
+│       ├── commands.py           # Special command handlers (/help, etc.)
+│       ├── cache.py              # Semantic caching implementation
+│       └── validators.py         # Input validation and filtering
+│
+├── data/
+│   ├── faiss_index.pkl           # FAISS vector index (generated)
+│   ├── chunk_metadata.pkl        # Chunk metadata (generated)
+│   └── .gitkeep                  # Keep directory in git
+│
+├── docs/
+│   ├── resume.pdf                # Personal resume
+│   ├── project_ml_system.pdf     # Project descriptions
+│   ├── blog_posts.pdf            # Technical writing samples
+│   ├── personal_notes.pdf        # Additional context
+│   └── README.md                 # Document collection guide
+│
+├── scripts/
+│   ├── build_index.py            # Offline: Build FAISS index
+│   ├── test_retrieval.py        # Test RAG pipeline
+│   └── validate_docs.py         # Check document quality
+│
+├── tests/
+│   ├── __init__.py
+│   ├── test_embeddings.py       # Test embedding service
+│   ├── test_vector_search.py   # Test FAISS retrieval
+│   ├── test_llm_client.py      # Test LLM integration
+│   ├── test_formatter.py       # Test response formatting
+│   └── test_e2e.py              # End-to-end integration tests
+│
+├── assets/
+│   ├── terminal_style.css       # Terminal CSS styling
+│   ├── ascii_art.txt            # ASCII art header
+│   └── link_metadata.json       # Project/social links
+│
+├── .env.example                  # Environment variables template
+├── .gitignore                    # Git ignore rules
+├── .streamlit/
+│   └── config.toml              # Streamlit configuration
+├── requirements.txt              # Python dependencies
+├── README.md                     # Project documentation
+└── LICENSE                       # Open source license (optional)
+```
+
+---
+
+## Infrastructure and Deployment
+
+### Infrastructure as Code
+
+- **Tool:** Not applicable (using managed platform)
+- **Location:** N/A
+- **Approach:** Streamlit Cloud or HuggingFace Spaces handles all infrastructure automatically
+
+### Deployment Strategy
+
+- **Strategy:** Continuous deployment via Git push
+- **CI/CD Platform:** Streamlit Cloud's built-in CD or HuggingFace Spaces auto-deploy
+- **Pipeline Configuration:** Not required (platform handles build and deployment automatically)
+
+**Deployment Process:**
+1. Push code to GitHub repository
+2. Platform detects changes and triggers rebuild
+3. Install dependencies from requirements.txt
+4. Start Streamlit app (`streamlit run app/main.py`)
+5. Health check succeeds → traffic routed to new version
+6. Old version deprovisioned
+
+### Environments
+
+- **Development:** Local machine (http://localhost:8501)
+  - Purpose: Development and testing
+  - Uses local Llama inference or HF API
+  - Hot reload enabled
+
+- **Production:** Streamlit Cloud or HuggingFace Spaces
+  - Purpose: Live portfolio chatbot
+  - Public URL: portfolio-chatbot.streamlit.app (or HF equivalent)
+  - HF Inference API for LLM calls
+
+**No staging environment for MVP** - direct dev to prod deployment acceptable for personal portfolio
+
+### Environment Promotion Flow
+
+```
+Local Development
+  ↓ (git push)
+GitHub Repository
+  ↓ (auto-deploy)
+Production (Streamlit Cloud)
+```
+
+**Rollback Strategy:**
+- Primary Method: Git revert to previous commit, push to trigger redeploy
+- Trigger Conditions: Application crash, unacceptable response quality, performance degradation
+- Recovery Time Objective: <5 minutes (time to revert and redeploy)
+
+---
+
+## Error Handling Strategy
+
+### General Approach
+
+- **Error Model:** Graceful degradation with user-friendly messages maintaining personality
+- **Exception Hierarchy:** 
+  - Base: `ChatbotError`
+  - LLM errors: `LLMGenerationError`, `LLMTimeoutError`
+  - RAG errors: `RetrievalError`, `EmbeddingError`
+  - Input errors: `InvalidInputError`, `RateLimitError`
+- **Error Propagation:** Catch at component boundaries, log details, return user-friendly messages
+
+### Logging Standards
+
+- **Library:** Python's built-in `logging` module with Streamlit integration
+- **Format:** `[%(asctime)s] %(levelname)s - %(name)s - %(message)s`
+- **Levels:**
+  - DEBUG: Detailed flow information (embeddings, vector similarities)
+  - INFO: Key user interactions (queries, response times)
+  - WARNING: Recoverable errors (LLM timeout, cache miss)
+  - ERROR: Failures requiring attention (FAISS load failure, invalid config)
+  - CRITICAL: Application cannot continue (missing index file, API key invalid)
+
+**Required Context:**
+- Correlation ID: Session ID for tracking user's conversation
+- Service Context: Component name (e.g., "RAG.Orchestrator", "LLM.Client")
+- User Context: Query text (truncated/sanitized), timestamp
+
+**Log Destinations:**
+- Development: Console output with color coding
+- Production: Streamlit Cloud logs (accessible via dashboard)
+
+### Error Handling Patterns
+
+#### External API Errors (HuggingFace LLM)
+
+- **Retry Policy:**
+  - Max 3 retries with exponential backoff: 1s, 2s, 4s
+  - Retry on: 429 (rate limit), 500-series errors, timeout
+  - No retry on: 400-series client errors (invalid request)
+
+- **Circuit Breaker:** 
+  - Open circuit after 5 consecutive failures
+  - Half-open after 60 seconds to test recovery
+  - Close circuit after 2 successful requests
+
+- **Timeout Configuration:** 60 seconds per LLM request
+
+- **Error Translation:**
+  - 429 Rate Limit: "I'm thinking a bit too hard right now! Give me a moment and try again."
+  - Timeout: "That's a deep question - it's taking me a while to think. Can you rephrase or try again?"
+  - 500 Server Error: "My brain is glitching! 🤖 

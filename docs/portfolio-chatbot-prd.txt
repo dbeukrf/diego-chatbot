@@ -1,0 +1,667 @@
+# Personal Portfolio Chatbot Product Requirements Document (PRD)
+
+---
+
+## Goals and Background Context
+
+### Goals
+
+- Create an interactive, memorable portfolio experience that demonstrates AI/ML technical capabilities while showcasing personality
+- Increase portfolio engagement from industry average of 30 seconds to 3+ minutes average session time
+- Drive qualified professional opportunities by making it easy for recruiters and collaborators to explore background and skills
+- Differentiate from generic portfolio websites through terminal aesthetics and conversational interface
+- Build a production-ready MVP in 3-4 weeks that serves as both portfolio piece and actual utility for visitors
+- Establish foundation for future enhancements (email summaries, analytics, open-source framework)
+
+### Background Context
+
+Traditional portfolio websites fail to engage visitors effectively. Recruiters spend only 6-8 seconds scanning static portfolios before moving on, and visitors struggle to find specific information without manual navigation through multiple pages. There's no way to ask contextual questions or get a sense of the developer's personality and communication style.
+
+This project addresses these pain points by creating an AI-powered chatbot that uses RAG (Retrieval-Augmented Generation) on personal documents to answer questions about the developer in a conversational, engaging way. The terminal-style interface signals technical credibility while the witty, helpful, enthusiastic personality creates memorable interactions.
+
+The solution leverages open-source technologies (Llama LLM, FAISS vector database, Streamlit) to demonstrate full-stack AI capability without external API dependencies. By making the portfolio itself an impressive technical demonstration, it serves triple duty: product, marketing, and proof of capability.
+
+This is a greenfield project with no existing codebase, designed for solo development over 3-4 weeks (20-30 hours total), targeting technical recruiters, hiring managers, and fellow developers as primary users.
+
+### Change Log
+
+| Date | Version | Description | Author |
+|------|---------|-------------|--------|
+| 2025-10-21 | 1.0 | Initial PRD creation | PM John |
+
+---
+
+## Requirements
+
+### Functional
+
+**FR1:** The system shall accept text input from users in a chat interface and generate relevant responses about the developer using Llama LLM and RAG on personal PDF documents.
+
+**FR2:** The system shall retrieve relevant context from personal documents (resume, project descriptions, notes) stored as embeddings in a FAISS vector database before generating responses.
+
+**FR3:** The system shall format all responses with a bullet-point TL;DR section at the top, followed by conversational storytelling below.
+
+**FR4:** The system shall embed contextual hyperlinks to projects, resume, GitHub, LinkedIn, and other portfolio artifacts within responses when relevant to the query.
+
+**FR5:** The system shall maintain a witty, helpful, and enthusiastic personality consistently across all responses as defined in the system prompt template.
+
+**FR6:** The system shall proactively suggest conversation topics when appropriate (e.g., "I can tell you about my ML projects, full-stack experience, or recent learnings - what interests you?").
+
+**FR7:** The system shall identify and challenge incorrect assumptions in user queries (e.g., "You asked about Java, but I primarily work in Python/TypeScript - want to know why?").
+
+**FR8:** The system shall filter inappropriate, offensive, or irrelevant queries and respond with personality-consistent error messages (404-style responses).
+
+**FR9:** The system shall display an introductory message on first load explaining who the developer is and the purpose of the chatbot.
+
+**FR10:** The system shall support special terminal-style commands (e.g., /help, /projects, /resume) for quick navigation to specific topics.
+
+**FR11:** The system shall include hidden easter eggs that respond to special queries or key sequences (e.g., konami code, specific developer in-jokes).
+
+**FR12:** The system shall chunk personal documents into ~1000 character segments with appropriate overlap for optimal RAG retrieval.
+
+### Non Functional
+
+**NFR1:** The system shall generate responses in less than 5 seconds for 95% of queries (less than 2 seconds for cached queries).
+
+**NFR2:** The system shall support at least 10 concurrent users without performance degradation.
+
+**NFR3:** The system shall work on modern browsers (Chrome 90+, Firefox 88+, Safari 14+, Edge 90+) without requiring user installation.
+
+**NFR4:** The system shall be deployable on free hosting tiers (Streamlit Cloud or Hugging Face Spaces) for MVP phase.
+
+**NFR5:** The system shall require $0 budget for MVP implementation using only open-source tools and free hosting.
+
+**NFR6:** The system shall be maintainable by a single developer without requiring team coordination or complex DevOps.
+
+**NFR7:** The system shall operate statelessly without persisting chat history or user accounts, ensuring privacy and simplicity.
+
+**NFR8:** The system shall be accessible via keyboard navigation and compatible with screen readers (WCAG 2.1 AA compliance).
+
+**NFR9:** The system shall implement rate limiting to prevent abuse while allowing legitimate usage patterns (target: 100 requests per IP per hour).
+
+**NFR10:** The system shall handle LLM errors gracefully with fallback responses that maintain personality and guide users to retry or rephrase.
+
+### Compatibility Requirements
+
+**CR1:** Personal PDF documents must remain the single source of truth - responses shall not contradict information in source documents.
+
+**CR2:** The system shall maintain consistent terminal aesthetic across all UI elements (color scheme, fonts, spacing, animations).
+
+**CR3:** Embedded links shall open in new tabs without disrupting the chat session.
+
+**CR4:** The system shall work on connections as slow as 5 Mbps without timeout errors.
+
+---
+
+## User Interface Design Goals
+
+### Overall UX Vision
+
+The interface embodies a terminal aesthetic that signals technical credibility while remaining accessible to non-technical recruiters. The experience should feel like using a modern CLI tool (Windows Terminal) - familiar to developers, intriguing to others. Every interaction reinforces the developer's technical capability through polish and attention to detail.
+
+The personality shines through immediately: witty opening message, playful error handling, enthusiastic topic suggestions. Users should feel they're having a conversation with the developer, not interrogating a database. The structured response format (bullets + storytelling) respects both quick scanners and deep explorers.
+
+### Key Interaction Paradigms
+
+**Conversational Flow:**
+- User types question → brief "thinking" animation → bot responds with formatted answer
+- Bot proactively suggests related topics after answers
+- Special commands (/help, /projects) provide shortcuts
+- Hidden easter eggs reward exploration
+
+**Progressive Disclosure:**
+- Start with clear introduction and purpose
+- Simple chat interface doesn't overwhelm
+- Complexity (commands, easter eggs) revealed through use
+- Links embedded naturally without cluttering UI
+
+**Terminal Metaphor:**
+- Monospace font throughout
+- Blinking cursor in input field
+- Color-coded messages (user vs. bot)
+- ASCII art headers for visual interest
+- Typing animation for bot responses
+- Scrollable history with auto-scroll to latest
+
+### Core Screens and Views
+
+**Main Chat Interface** - Single-page application with persistent chat container, message history, and input field at bottom. No navigation required.
+
+**Introduction Screen (First Load)** - Welcome message with ASCII art header, brief explanation of chatbot purpose, and suggested starter questions.
+
+**Error State** - Creative 404-style messages maintaining personality when queries can't be answered or system errors occur.
+
+**Help View (Optional)** - Triggered by /help command, displays available commands and suggested topics in terminal-style formatted list.
+
+### Accessibility
+
+**Target:** WCAG 2.1 AA compliance
+
+**Key Requirements:**
+- Keyboard-only navigation (Tab, Enter, arrow keys)
+- Screen reader compatibility with proper ARIA labels
+- Sufficient color contrast (4.5:1 minimum) despite dark terminal theme
+- Focus indicators visible on all interactive elements
+- Text resizable up to 200% without loss of functionality
+
+### Branding
+
+**Terminal Aesthetic Inspiration:**
+- Windows Terminal default theme as base
+- Dark background (#0C0C0C or similar)
+- Accent colors for user messages (cyan/blue family)
+- Bot messages in warm white/green
+- Error messages in red/orange
+- Success/confirmation in green
+- Minimal, clean, functional design
+
+**ASCII Art Style:**
+- Simple, readable characters
+- No complex graphics that break on different fonts
+- Used sparingly for headers and special moments
+- Maintains professionalism while adding personality
+
+### Target Device and Platforms
+
+**Primary:** Desktop web browsers (responsive design)
+
+**Secondary:** Tablet and mobile (functional but optimized for desktop experience)
+
+**Platforms:**
+- Chrome, Firefox, Safari, Edge (latest 2 versions)
+- Windows 10+, macOS 10.15+, Linux (Ubuntu 20.04+)
+- iOS 14+, Android 10+ (responsive web view)
+
+---
+
+## Technical Assumptions
+
+### Repository Structure
+
+**Type:** Monorepo
+
+**Rationale:** Single repository simplifies solo development, version control, and deployment. No need for complex multi-repo coordination for a straightforward application.
+
+**Structure:**
+```
+portfolio-chatbot/
+├── app/                 # Streamlit application code
+│   ├── main.py         # Entry point
+│   ├── ui/             # UI components
+│   ├── llm/            # LLM integration
+│   └── rag/            # RAG pipeline
+├── docs/               # Source PDF documents
+├── data/               # FAISS index, embeddings
+├── tests/              # Unit and integration tests
+├── scripts/            # Setup and utility scripts
+└── requirements.txt    # Python dependencies
+```
+
+### Service Architecture
+
+**Pattern:** Monolithic application within Streamlit framework
+
+**Rationale:** Streamlit handles routing, UI rendering, and state management. No need for separate API layer or microservices for MVP. Backend logic (LLM, RAG) runs in same process as UI.
+
+**Components:**
+- **UI Layer:** Streamlit components (chat interface, message rendering)
+- **LLM Layer:** Llama model integration with system prompt
+- **RAG Layer:** FAISS vector search and context retrieval
+- **Document Processing:** PDF ingestion and chunking (offline process)
+
+### Testing Requirements
+
+**Strategy:** Unit tests for critical paths, integration tests for end-to-end flow, manual testing for personality and UX
+
+**Scope:**
+- Unit tests: RAG chunking, embedding, retrieval accuracy
+- Integration tests: User query → RAG → LLM → formatted response
+- Manual tests: Personality consistency, error handling, UI polish
+
+**Tools:** pytest for unit/integration, manual test scripts for common queries
+
+**Coverage Goal:** 60% code coverage minimum, 100% for RAG pipeline
+
+### Additional Technical Assumptions and Requests
+
+**LLM Selection:**
+- Llama 3 8B model preferred (best balance of quality and speed)
+- Quantized version (4-bit or 8-bit) for inference efficiency
+- Run locally for development, hosted inference for production (HuggingFace Inference API free tier or similar)
+
+**Embedding Model:**
+- sentence-transformers: all-MiniLM-L6-v2 (fast, good quality, 384 dimensions)
+- Alternative: all-mpnet-base-v2 (better quality, slower, 768 dimensions) if performance allows
+
+**FAISS Configuration:**
+- IndexFlatL2 for simplicity (exact search, no approximation)
+- If performance issues: IndexIVFFlat with 100 clusters
+- Store index as pickle file in data/ directory
+
+**Streamlit Customization:**
+- Custom CSS injected via st.markdown with unsafe_allow_html
+- Session state for message history (in-memory, no persistence)
+- Caching decorators for expensive operations (embedding, model loading)
+
+**Deployment:**
+- Primary: Streamlit Cloud (free tier, 1GB RAM limit)
+- Backup: Hugging Face Spaces (free tier, 16GB RAM, better for model hosting)
+- Domain: Custom subdomain or default platform URL for MVP
+
+**Document Processing:**
+- Offline preprocessing: PDFs → text → chunks → embeddings → FAISS index
+- Run once during setup, regenerate only when documents update
+- Store processed index in repository (if <100MB) or separate storage
+
+**Error Handling:**
+- LLM timeout: Fallback to "I'm thinking deeply about this - can you rephrase or try again?"
+- Empty RAG results: "I don't have specific information about that, but I can tell you about [suggest related topics]"
+- Rate limit hit: "Whoa, lots of questions! Take a breath and try again in a moment."
+
+**Performance Optimization:**
+- Semantic caching: Hash query embeddings, cache responses for exact matches
+- Lazy loading: Load LLM model on first query (not on page load)
+- Streaming responses: If Streamlit supports, stream tokens for better perceived performance
+
+---
+
+## Epic List
+
+This project is structured as a single epic for rapid MVP development over 3-4 weeks. The epic delivers a complete, polished chatbot experience with all core functionality.
+
+**Epic 1: Terminal-Style Portfolio Chatbot with RAG Intelligence**
+
+Build a production-ready, interactive portfolio chatbot that answers questions about the developer using RAG on personal documents, featuring terminal aesthetics and engaging personality. This epic encompasses project setup, RAG pipeline implementation, LLM integration, terminal UI, and deployment - delivering a complete end-to-end experience that demonstrates technical capability while serving as a functional portfolio tool.
+
+---
+
+## Epic 1: Terminal-Style Portfolio Chatbot with RAG Intelligence
+
+**Epic Goal:**
+
+Deliver a fully functional portfolio chatbot that impresses visitors with terminal aesthetics, answers questions accurately using personal documents, and demonstrates AI/ML technical capability - all within a 3-4 week timeline on $0 budget.
+
+---
+
+### Story 1.1: Project Foundation and Development Environment
+
+**As a** developer,
+**I want** a properly configured development environment and project structure,
+**so that** I can build and test the chatbot efficiently.
+
+#### Acceptance Criteria
+
+1. Python 3.9+ environment is set up with virtual environment
+2. All required dependencies are installed and documented in requirements.txt
+3. Project directory structure follows planned architecture (app/, docs/, data/, tests/)
+4. Git repository is initialized with appropriate .gitignore for Python/ML projects
+5. Basic Streamlit "Hello World" app runs successfully locally
+6. README.md includes setup instructions and project overview
+
+---
+
+### Story 1.2: PDF Document Collection and Preprocessing
+
+**As a** developer,
+**I want** to collect, organize, and prepare my personal documents for RAG processing,
+**so that** the chatbot has comprehensive information to answer questions about me.
+
+#### Acceptance Criteria
+
+1. Personal PDF documents are collected: resume, project READMEs, blog posts, personal notes (minimum 5 documents)
+2. Documents are organized in docs/ directory with clear naming convention
+3. PDF text extraction script successfully extracts text from all documents
+4. Text quality is verified (no major OCR errors or formatting issues)
+5. Documents contain sufficient information to answer expected portfolio questions (skills, projects, experience, background)
+
+---
+
+### Story 1.3: RAG Pipeline Implementation - Chunking and Embedding
+
+**As a** developer,
+**I want** to implement the document chunking and embedding pipeline,
+**so that** I can create searchable vector representations of my documents.
+
+#### Acceptance Criteria
+
+1. Chunking function splits documents into ~1000 character segments with 200 character overlap
+2. sentence-transformers model (all-MiniLM-L6-v2) is loaded and generates embeddings successfully
+3. All document chunks are embedded and stored with metadata (source document, chunk index)
+4. Embedding pipeline can be re-run easily when documents are updated
+5. Unit tests verify chunk size, overlap, and embedding dimensions (384) are correct
+6. Processing time for all documents is under 5 minutes on development machine
+
+---
+
+### Story 1.4: FAISS Vector Database Setup and Retrieval
+
+**As a** developer,
+**I want** to create a FAISS vector database and implement similarity search,
+**so that** I can retrieve relevant document chunks for user queries.
+
+#### Acceptance Criteria
+
+1. FAISS IndexFlatL2 is created from document embeddings
+2. Index is saved to disk (data/faiss_index.pkl) and can be loaded successfully
+3. Query function accepts text input, generates embedding, and retrieves top-k similar chunks (k=3 default)
+4. Retrieved chunks include source metadata (document name, chunk index)
+5. Retrieval accuracy is tested with 10+ sample queries and returns relevant results
+6. Query retrieval time is under 500ms for typical queries
+
+---
+
+### Story 1.5: Llama LLM Integration and System Prompt
+
+**As a** developer,
+**I want** to integrate Llama LLM with a personality-defining system prompt,
+**so that** the chatbot can generate witty, helpful, enthusiastic responses.
+
+#### Acceptance Criteria
+
+1. Llama 3 8B model is accessible (locally or via HuggingFace Inference API)
+2. System prompt template is created defining personality: witty, helpful, enthusiastic
+3. System prompt includes response format instructions (bullet points + storytelling)
+4. System prompt includes guidelines for link embedding and topic suggestions
+5. LLM successfully generates responses given system prompt and user query
+6. Response quality is manually tested with 10+ queries for personality consistency
+7. Response generation time is under 5 seconds for typical queries
+
+---
+
+### Story 1.6: RAG-Enhanced Response Generation
+
+**As a** developer,
+**I want** to combine RAG context retrieval with LLM generation,
+**so that** responses are grounded in my personal documents rather than hallucinated.
+
+#### Acceptance Criteria
+
+1. Query pipeline: user input → embedding → FAISS retrieval → context injection → LLM generation
+2. Retrieved chunks are formatted and injected into LLM prompt context
+3. System prompt instructs LLM to prioritize retrieved context over general knowledge
+4. Responses reference information from retrieved documents
+5. Integration is tested with 10+ queries comparing RAG vs. non-RAG responses (RAG should be more specific and accurate)
+6. Fallback behavior is implemented when no relevant chunks are found (guide to available topics)
+
+---
+
+### Story 1.7: Response Formatting - Bullet Points and Storytelling
+
+**As a** user,
+**I want** chatbot responses to include both quick bullet points and detailed storytelling,
+**so that** I can scan quickly or read deeply based on my needs.
+
+#### Acceptance Criteria
+
+1. System prompt includes clear instructions for two-part response format
+2. All responses begin with "**TL;DR:**" section containing 2-4 bullet points
+3. Bullet points are concise (one line each), actionable, and capture key information
+4. Following bullet points, responses include conversational storytelling with more detail
+5. Storytelling section maintains witty/helpful/enthusiastic personality
+6. Format is tested with 15+ queries covering different question types
+7. Formatting is consistent across all response types
+
+---
+
+### Story 1.8: Contextual Link Embedding
+
+**As a** user,
+**I want** chatbot responses to include hyperlinks to relevant portfolio artifacts,
+**so that** I can easily navigate to projects, resume, and social profiles.
+
+#### Acceptance Criteria
+
+1. System prompt instructs LLM to embed markdown links when relevant
+2. Link metadata is provided to LLM (project URLs, GitHub, LinkedIn, resume link)
+3. Links are contextually appropriate (mentioned when relevant to query)
+4. Links use descriptive text rather than raw URLs
+5. Links are tested across 10+ queries and appear naturally in responses
+6. Links open in new tabs without disrupting chat session
+
+---
+
+### Story 1.9: Streamlit Terminal UI - Core Chat Interface
+
+**As a** user,
+**I want** a clean, terminal-style chat interface,
+**so that** I can interact with the chatbot in an aesthetically pleasing way.
+
+#### Acceptance Criteria
+
+1. Streamlit app displays a chat container with message history
+2. User messages and bot messages are visually distinct (color-coded)
+3. Monospace font is applied to all text
+4. Dark background (#0C0C0C or similar) with appropriate text contrast
+5. Input field is fixed at bottom with "Enter to send" behavior
+6. Chat auto-scrolls to latest message
+7. Interface is responsive and works on desktop browsers (Chrome, Firefox, Safari, Edge)
+8. Page load time is under 3 seconds on broadband connection
+
+---
+
+### Story 1.10: Terminal Aesthetics - Polish and Animations
+
+**As a** user,
+**I want** terminal-style visual polish including typing animations and cursor blink,
+**so that** the experience feels authentic and engaging.
+
+#### Acceptance Criteria
+
+1. Cursor blinks in input field using CSS animation
+2. Bot responses appear with typing animation (character-by-character or word-by-word)
+3. ASCII art header displays on first page load with project name/logo
+4. Simulated "thinking" delay (1-2 seconds) before bot responses for authenticity
+5. Windows Terminal-inspired color scheme is applied (specific colors documented in CSS)
+6. Animations are smooth (60fps) and don't cause performance issues
+7. Animations can be disabled for accessibility if needed
+
+---
+
+### Story 1.11: Introductory Message and Onboarding
+
+**As a** user visiting the chatbot for the first time,
+**I want** a clear introduction explaining who this is about and how to use the chatbot,
+**so that** I understand the purpose and can start exploring effectively.
+
+#### Acceptance Criteria
+
+1. First message is auto-displayed on page load (not user-triggered)
+2. Introduction includes: developer name, chatbot purpose, and what it can answer
+3. Introduction suggests 3-5 example starter questions to guide users
+4. Introduction mentions special commands (/help, /projects) if implemented
+5. Introduction tone matches personality (witty, helpful, enthusiastic)
+6. ASCII art header or visual element makes introduction memorable
+7. Introduction is concise (under 200 words) but informative
+
+---
+
+### Story 1.12: Proactive Topic Suggestions
+
+**As a** user,
+**I want** the chatbot to suggest related topics after answering my questions,
+**so that** I can discover more information without thinking of every question myself.
+
+#### Acceptance Criteria
+
+1. After each bot response, system analyzes query and suggests 2-3 related topics
+2. Suggestions are formatted as clickable prompts or simple text suggestions
+3. Suggestions are contextually relevant to the question asked
+4. Suggestions include variety: technical skills, projects, experiences, personal interests
+5. System prompt includes instructions for generating appropriate suggestions
+6. Suggestions are tested with 10+ queries for relevance and variety
+
+---
+
+### Story 1.13: Challenging Incorrect Assumptions
+
+**As a** user,
+**I want** the chatbot to politely correct my incorrect assumptions,
+**so that** I get accurate information and understand the developer's actual experience.
+
+#### Acceptance Criteria
+
+1. System prompt includes instructions to identify and correct misconceptions
+2. Corrections are phrased politely and constructively (e.g., "Actually, I primarily work in X rather than Y...")
+3. After correction, chatbot offers relevant information about the actual technology/experience
+4. Common misconceptions are tested: wrong programming languages, incorrect job titles, misunderstood project tech
+5. Corrections maintain helpful, enthusiastic tone without being condescending
+6. At least 5 test queries with deliberate misconceptions are corrected appropriately
+
+---
+
+### Story 1.14: Inappropriate Content Filtering and Error Handling
+
+**As a** user,
+**I want** inappropriate or irrelevant queries to be handled gracefully with personality-consistent responses,
+**so that** the chatbot maintains professional boundaries while staying true to its character.
+
+#### Acceptance Criteria
+
+1. Input validation detects offensive language, spam, or completely off-topic queries
+2. Filtered queries receive creative 404-style error messages maintaining personality
+3. Error messages guide users back to productive conversation topics
+4. Multiple error message variations prevent repetition
+5. Rate limiting is implemented (100 requests per IP per hour) with friendly "slow down" message
+6. LLM timeouts or failures trigger fallback messages suggesting retry
+7. Testing includes: profanity, gibberish, repeated spam, valid edge cases
+
+---
+
+### Story 1.15: Special Terminal Commands
+
+**As a** user familiar with terminal interfaces,
+**I want** to use special commands like /help and /projects for quick navigation,
+**so that** I can efficiently access specific information.
+
+#### Acceptance Criteria
+
+1. Input parser detects commands starting with "/" before sending to LLM
+2. /help command displays list of available commands and suggested topics
+3. /projects command provides links to all major projects with brief descriptions
+4. /resume command provides link to resume and key highlights
+5. /about command gives concise bio and background
+6. Commands bypass LLM for instant responses (under 500ms)
+7. Command responses maintain terminal aesthetic and personality
+8. At least 5 commands are implemented and documented
+
+---
+
+### Story 1.16: Hidden Easter Eggs
+
+**As an** exploratory user,
+**I want** to discover hidden easter eggs and special responses,
+**so that** the experience is fun and rewards curiosity.
+
+#### Acceptance Criteria
+
+1. At least 3 hidden easter eggs are implemented
+2. Easter eggs are triggered by: specific keywords, special phrases, or key sequences
+3. Easter egg responses are creative, memorable, and maintain personality
+4. Easter eggs don't interfere with normal chatbot functionality
+5. At least one easter egg relates to developer's personal interests or inside jokes
+6. Easter eggs are documented privately (not in public docs) for authentic discovery
+
+---
+
+### Story 1.17: Deployment to Streamlit Cloud
+
+**As a** developer,
+**I want** the chatbot deployed to a public URL on free hosting,
+**so that** recruiters and collaborators can access it without local setup.
+
+#### Acceptance Criteria
+
+1. Application is deployed to Streamlit Cloud (or Hugging Face Spaces if preferred)
+2. Public URL is accessible without authentication
+3. Custom subdomain or memorable URL is configured (e.g., portfolio-chatbot.streamlit.app)
+4. Environment variables are configured for any API keys or sensitive data
+5. FAISS index and required files are deployed successfully
+6. Application loads in under 5 seconds (cold start may be slower, warm start under 3s)
+7. Application handles at least 10 concurrent users without crashes
+8. Error monitoring or logging is enabled for debugging production issues
+
+---
+
+### Story 1.18: Testing and Quality Assurance
+
+**As a** developer,
+**I want** comprehensive testing to ensure the chatbot works reliably,
+**so that** it makes a good impression on portfolio visitors.
+
+#### Acceptance Criteria
+
+1. Unit tests cover RAG pipeline (chunking, embedding, retrieval) with 80%+ coverage
+2. Integration tests cover end-to-end flow (query → RAG → LLM → response) for 10+ scenarios
+3. Manual testing checklist completed: personality consistency, UI polish, error handling, performance
+4. Cross-browser testing completed: Chrome, Firefox, Safari, Edge
+5. Mobile responsive testing completed: iOS Safari, Chrome Android
+6. Accessibility testing completed: keyboard navigation, screen reader, color contrast
+7. Performance testing: 20 consecutive queries without degradation, response times documented
+8. Beta testing with 3+ external users, feedback incorporated
+
+---
+
+### Story 1.19: Documentation and Portfolio Integration
+
+**As a** developer,
+**I want** clear documentation and integration with my broader portfolio,
+**so that** the chatbot serves its purpose as a portfolio piece.
+
+#### Acceptance Criteria
+
+1. README.md includes: project description, features, tech stack, setup instructions, deployment info
+2. Architecture documentation explains RAG pipeline, LLM integration, and design decisions
+3. Code is commented appropriately for maintainability
+4. Portfolio website/landing page includes prominent link to chatbot with description
+5. GitHub repository (if public) has professional presentation: clear README, topics/tags, license
+6. Social media announcement prepared: Twitter/LinkedIn post showcasing chatbot
+7. Analytics or tracking is configured (optional: Plausible, Simple Analytics) for usage insights
+
+---
+
+## Checklist Results Report
+
+*This section will be populated after running the PM checklist to validate the PRD.*
+
+---
+
+## Next Steps
+
+### UX Expert Prompt
+
+**Sally, UX Expert, please proceed with creating the UI/UX Specification:**
+
+Review this PRD thoroughly, focusing on the User Interface Design Goals section. Create a detailed front-end specification that expands on the terminal aesthetic, defines the exact color scheme, specifies all UI components and their interactions, and provides implementation guidance for the Streamlit developer.
+
+Key areas to detail:
+- Exact Windows Terminal color palette with hex codes
+- ASCII art header design and specifications
+- Typing animation implementation approach
+- Message container layout and scrolling behavior
+- Responsive design considerations for mobile
+- Accessibility implementation specifics (ARIA labels, keyboard shortcuts)
+- Error state designs (404-style messages)
+
+Use the front-end-spec-tmpl template to structure your specification.
+
+---
+
+### Architect Prompt
+
+**Winston, Architect, please proceed with creating the Architecture Document:**
+
+Review this PRD thoroughly, focusing on the Technical Assumptions and all functional requirements. Create a comprehensive architecture document that provides detailed technical specifications for implementing this chatbot.
+
+Key areas to detail:
+- Detailed source tree structure for the monorepo
+- RAG pipeline architecture with specific code modules
+- LLM integration patterns and error handling strategies
+- FAISS configuration and performance optimization
+- Streamlit customization approach and state management
+- Deployment architecture for Streamlit Cloud or alternatives
+- Security considerations (rate limiting, input sanitization, prompt injection prevention)
+- Testing strategy with specific frameworks and approaches
+- Monitoring and debugging approach for production
+- Code organization and module responsibilities
+
+Use the architecture-tmpl template to structure your document. The architecture should be detailed enough that a developer can implement the system without ambiguity.

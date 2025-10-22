@@ -1,0 +1,643 @@
+# Project Brief: Personal Portfolio Chatbot
+
+---
+
+## Executive Summary
+
+**Product Concept:**  
+An AI-powered portfolio chatbot that answers questions about the developer using RAG (Retrieval-Augmented Generation) on personal documents, featuring a distinctive terminal-style interface and authentic personality.
+
+**Primary Problem Being Solved:**  
+Traditional portfolio websites are static and don't engage visitors. Recruiters and potential collaborators can't easily explore a developer's background, skills, and experiences in a conversational, interactive way. This chatbot transforms a portfolio from a passive resume into an engaging, explorable conversation.
+
+**Target Market:**  
+- Primary: Recruiters, hiring managers, and technical leads evaluating the developer
+- Secondary: Fellow developers, potential collaborators, and professional network connections
+
+**Key Value Proposition:**  
+An interactive, memorable portfolio experience that demonstrates both technical capability (AI/RAG implementation) and personality (witty, helpful, enthusiastic), while providing comprehensive information about the developer through natural conversation backed by authentic personal documents.
+
+---
+
+## Problem Statement
+
+### Current State and Pain Points
+
+**For Visitors:**
+- Static portfolios require manual navigation through multiple pages
+- Finding specific information (skills, projects, experience) is time-consuming
+- No way to ask contextual or follow-up questions
+- Limited sense of the developer's personality and communication style
+
+**For the Developer:**
+- Portfolio doesn't showcase AI/ML capabilities in action
+- Difficult to stand out among thousands of similar portfolio websites
+- Can't capture visitor engagement or common questions
+- Static content quickly becomes outdated
+
+### Impact of the Problem
+
+- **Time Cost:** Recruiters spend 6-8 seconds on average reviewing portfolios before moving on
+- **Missed Opportunities:** Interesting projects or skills get overlooked due to poor discoverability
+- **Commoditization:** Generic portfolio templates make differentiation nearly impossible
+- **Engagement Gap:** No mechanism to create memorable interactions with potential employers
+
+### Why Existing Solutions Fall Short
+
+- **Traditional Portfolios:** Beautiful but passive, no interaction
+- **Generic Chatbots:** Lack personal context and authentic voice
+- **LinkedIn Profiles:** Limited customization and personality expression
+- **Interactive Demos:** Often disconnected from actual portfolio content
+
+### Urgency and Importance
+
+**Why Now:**
+- AI/ML skills are highly sought after but hard to demonstrate
+- Conversational AI is mature enough for reliable implementation
+- Open-source LLMs (Llama) make this feasible without API costs
+- Terminal aesthetics are trending and resonate with technical audiences
+
+**Strategic Importance:**
+This project serves triple duty: portfolio piece, technical demonstration, and actual utility for visitors. It's both the product and the marketing.
+
+---
+
+## Proposed Solution
+
+### Core Concept and Approach
+
+A web-based chatbot interface styled as a terminal that:
+1. Uses open-source Llama LLM for natural language understanding
+2. Leverages RAG on personal PDF documents (resume, project docs, notes) via FAISS vector database
+3. Responds with witty, helpful, enthusiastic personality
+4. Provides structured responses (bullet points + storytelling)
+5. Embeds contextual links to projects, resume, and social profiles
+
+### Key Differentiators from Existing Solutions
+
+**Technical Differentiation:**
+- Local RAG implementation (no API dependencies, demonstrates full-stack AI capability)
+- FAISS vector database (shows understanding of efficient similarity search)
+- Streamlit for rapid MVP (pragmatic tech choice demonstration)
+
+**Design Differentiation:**
+- Terminal aesthetic (appeals to technical audience, showcases attention to detail)
+- ASCII art headers and typing animations (memorable, cohesive experience)
+- Windows Terminal-inspired color scheme (modern, familiar to developers)
+
+**Content Differentiation:**
+- Authentic personality (witty, helpful, enthusiastic - not corporate generic)
+- Balance of achievements and challenges/lessons learned (transparency builds trust)
+- Proactive topic suggestions (guides conversation, improves engagement)
+- Challenges incorrect assumptions (shows critical thinking, prevents misinformation)
+
+### Why This Solution Will Succeed
+
+**Technical Feasibility:**
+- All components are proven technologies (Streamlit, Llama, FAISS)
+- Clear implementation path with manageable scope
+- No external dependencies or API costs
+
+**User Appeal:**
+- Novelty factor creates memorable first impression
+- Terminal aesthetic signals technical credibility
+- Conversational interface lowers barrier to exploration
+- Authentic personality creates human connection
+
+**Portfolio Value:**
+- Demonstrates AI/ML implementation skills
+- Shows full-stack capability (frontend + backend + ML)
+- Proves ability to scope and deliver complete projects
+- Provides talking point in interviews
+
+### High-Level Vision
+
+**Immediate Vision (MVP):**
+A functional, polished chatbot that answers questions about the developer using personal documents, with terminal aesthetics and engaging personality.
+
+**Long-Term Vision:**
+A sophisticated portfolio assistant that can recommend projects based on visitor interests, send customized summaries via email, track engagement analytics, and adapt personality based on context (technical deep-dive vs. casual exploration).
+
+---
+
+## Target Users
+
+### Primary User Segment: Technical Recruiters & Hiring Managers
+
+**Demographic/Firmographic Profile:**
+- Age: 28-45
+- Role: Technical recruiters, engineering managers, tech leads
+- Company size: Startups to enterprise
+- Tech-savvy, evaluates 20-50 candidates per week
+
+**Current Behaviors and Workflows:**
+- Quickly scan portfolios for relevant skills and projects
+- Look for GitHub activity and code samples
+- Assess communication skills through writing samples
+- Seek evidence of problem-solving ability
+- Make snap judgments based on first impression
+
+**Specific Needs and Pain Points:**
+- Need to quickly assess technical fit for open roles
+- Want to understand candidate's actual capabilities, not just buzzwords
+- Struggle to differentiate between similar candidates
+- Limited time for deep evaluation of each candidate
+- Difficulty gauging personality fit from static content
+
+**Goals They're Trying to Achieve:**
+- Identify qualified candidates efficiently
+- Assess both technical skills and communication ability
+- Find candidates who stand out and show initiative
+- Gather talking points for initial phone screens
+- Build pipeline of interesting candidates for future roles
+
+---
+
+### Secondary User Segment: Fellow Developers & Potential Collaborators
+
+**Demographic/Firmographic Profile:**
+- Age: 22-40
+- Role: Software engineers, tech leads, startup founders
+- Skill level: Intermediate to advanced
+- Actively networking and seeking collaborators
+
+**Current Behaviors and Workflows:**
+- Browse portfolios for project inspiration
+- Evaluate potential collaborators for side projects
+- Research technologies and implementation approaches
+- Build professional networks through technical communities
+- Share interesting portfolio sites with peers
+
+**Specific Needs and Pain Points:**
+- Want to understand technical depth, not just surface-level skills
+- Seek developers with complementary skills for collaboration
+- Interested in unique implementation approaches and tech choices
+- Value transparency about challenges and learning experiences
+- Appreciate authentic personality over corporate polish
+
+**Goals They're Trying to Achieve:**
+- Find potential project collaborators
+- Learn from others' technical approaches
+- Build professional network with like-minded developers
+- Stay current with emerging technologies
+- Identify mentors or mentees
+
+---
+
+## Goals & Success Metrics
+
+### Business Objectives
+
+1. **Increase Portfolio Engagement**
+   - Metric: Average time on site >3 minutes (vs. industry average of 30 seconds)
+   - Target: 80% of visitors interact with chatbot
+   - Timeline: Within 1 month of launch
+
+2. **Drive Professional Opportunities**
+   - Metric: Recruiter outreach messages referencing chatbot
+   - Target: 5+ qualified opportunities per quarter
+   - Timeline: Within 3 months of launch
+
+3. **Demonstrate Technical Capability**
+   - Metric: Interview conversation topics include chatbot implementation
+   - Target: Mentioned in 70% of technical interviews
+   - Timeline: Immediate upon launch
+
+4. **Build Professional Brand**
+   - Metric: Social media shares and technical community mentions
+   - Target: 50+ organic shares in first 3 months
+   - Timeline: Ongoing
+
+### User Success Metrics
+
+1. **Conversation Completion Rate**
+   - Definition: Percentage of visitors who engage beyond first message
+   - Target: >60% continue past initial query
+
+2. **Information Discovery**
+   - Definition: Number of questions asked per session
+   - Target: Average 5+ questions per engaged visitor
+
+3. **Link Click-Through Rate**
+   - Definition: Percentage of embedded links clicked
+   - Target: >40% of visitors click at least one project/profile link
+
+4. **Session Duration**
+   - Definition: Time spent actively engaging with chatbot
+   - Target: >3 minutes for engaged sessions
+
+### Key Performance Indicators (KPIs)
+
+1. **Technical Performance: Response Time <2 seconds** - 95th percentile response time from user input to complete bot response. Target demonstrates production-ready implementation.
+
+2. **Content Quality: Relevance Score >4/5** - User feedback on answer relevance (if feedback mechanism implemented). Target ensures RAG is working effectively.
+
+3. **User Engagement: Message Depth >5** - Average number of messages exchanged per session. Target indicates visitors find value in continued exploration.
+
+4. **Professional Impact: Qualified Leads >5/quarter** - Recruiter contacts or collaboration opportunities directly mentioning chatbot. Target validates portfolio effectiveness.
+
+5. **Technical Showcase: GitHub Stars/Shares >50** - Community validation of technical implementation (if code is open-sourced). Target demonstrates thought leadership.
+
+---
+
+## MVP Scope
+
+### Core Features (Must Have)
+
+1. **Terminal-Style Web Interface:** Streamlit-based chat UI with dark theme, monospace font, and terminal aesthetics. Users can type messages and receive responses in a scrollable container with color-coded messages (user vs. bot).
+
+   *Rationale:* Foundation of user experience; differentiating visual design that signals technical credibility.
+
+2. **Llama LLM Integration:** Open-source Llama model (local or API) for natural language understanding and response generation.
+
+   *Rationale:* Core intelligence layer; demonstrates AI/ML capability without external API dependencies.
+
+3. **RAG Pipeline with FAISS:** PDF ingestion → text extraction → chunking (~1k chars) → embedding → FAISS vector database → similarity search for relevant context retrieval.
+
+   *Rationale:* Enables personalized responses grounded in authentic documents; showcases understanding of modern AI architecture.
+
+4. **Personality System Prompt:** Template-based personality definition (witty, helpful, enthusiastic) integrated into LLM prompts.
+
+   *Rationale:* Differentiates from generic chatbots; creates memorable interactions that reflect authentic voice.
+
+5. **Structured Response Format:** Responses include bullet point TL;DR followed by conversational storytelling expansion.
+
+   *Rationale:* Optimizes for both quick scanners and deep explorers; demonstrates understanding of information hierarchy.
+
+6. **Embedded Contextual Links:** Responses include hyperlinks to relevant projects, resume sections, and social profiles when contextually appropriate.
+
+   *Rationale:* Drives portfolio objectives; provides clear paths from conversation to concrete artifacts.
+
+7. **Inappropriate Question Filtering:** Basic content moderation to reject offensive, irrelevant, or inappropriate queries with personality-consistent error messages.
+
+   *Rationale:* Protects brand and user experience; maintains professional boundaries.
+
+### Out of Scope for MVP
+
+1. **User Accounts & Authentication** - Adds complexity without immediate value; chatbot should work for anonymous visitors.
+
+2. **Chat History Persistence** - Stateless sessions sufficient for MVP; users can restart conversations easily.
+
+3. **Multi-Language Support** - Focus on English-speaking audience first; can expand later based on demand.
+
+4. **Email Chat Summaries** - Nice-to-have feature that requires email service integration; defer to V2.
+
+5. **Advanced Analytics Dashboard** - Basic metrics sufficient initially; comprehensive analytics can be added once usage patterns emerge.
+
+6. **Mobile App** - Web-responsive interface sufficient; native apps add significant development overhead.
+
+7. **Voice Input/Output** - Text-based interaction is MVP; voice adds complexity and browser compatibility concerns.
+
+8. **Multi-Turn Context Window >5 Messages** - Simple conversational context sufficient for MVP; advanced context tracking can improve in V2.
+
+### MVP Success Criteria
+
+The MVP will be considered successful when:
+
+1. **Functional Completeness:** All 7 core features are implemented and working reliably
+2. **Response Quality:** Bot provides relevant, accurate answers to >90% of typical questions about the developer
+3. **Performance:** Response time <3 seconds for 95% of queries
+4. **User Experience:** Terminal aesthetics render correctly across modern browsers (Chrome, Firefox, Safari)
+5. **Engagement:** At least 3 beta testers can complete a 5+ question conversation successfully
+6. **Portfolio Integration:** Chatbot successfully links to all major portfolio artifacts (projects, resume, GitHub, LinkedIn)
+7. **Deployment:** Application is accessible via public URL and requires no local setup for users
+
+---
+
+## Post-MVP Vision
+
+### Phase 2 Features
+
+**Enhanced Polish & Engagement:**
+- Typing animations and cursor blink for authentic terminal feel
+- ASCII art headers for visual interest
+- Simulated "thinking" delay (500ms-1s) for authenticity
+- Creative 404-style error messages aligned with personality
+- Windows Terminal color scheme refinement
+
+**Interactive Features:**
+- Proactive topic introduction ("I can tell you about my ML projects, full-stack experience, or recent learnings - what interests you?")
+- Challenge incorrect assumptions ("You asked about Java, but I primarily work in Python/TypeScript - want to know why I made that choice?")
+- Special terminal-style commands (/help, /projects, /resume, /surprise)
+- Hidden easter eggs for explorers (konami code, special queries, etc.)
+
+**Technical Enhancements:**
+- Improved chunking strategy with overlap for better context
+- Semantic caching for faster repeated queries
+- A/B testing different personality variations
+- Basic analytics (question patterns, session duration, link clicks)
+
+### Long-Term Vision
+
+**Year 1:** Portfolio assistant that impresses 100+ visitors monthly and generates 20+ qualified professional opportunities.
+
+**Year 2:** Open-source the framework as "Terminal Portfolio Chatbot Starter Kit" for other developers; establish thought leadership in AI-powered portfolios.
+
+**Beyond:** Evolve into personalized AI assistant that can conduct initial technical screens, recommend relevant open-source projects to contribute to, and provide career advice based on current market trends.
+
+### Expansion Opportunities
+
+1. **Framework Productization:** Package as open-source starter kit for other developers to create their own portfolio chatbots
+2. **Multi-Language Support:** Expand to non-English speakers for global reach
+3. **Integration Marketplace:** Connect with ATS systems, LinkedIn, GitHub for automated updates
+4. **Community Features:** Allow visitors to leave anonymous feedback or suggestions
+5. **Advanced Personalization:** Adapt responses based on detected visitor role (recruiter vs. developer vs. student)
+
+---
+
+## Technical Considerations
+
+### Platform Requirements
+
+**Target Platforms:**
+- Modern web browsers (Chrome 90+, Firefox 88+, Safari 14+, Edge 90+)
+- Desktop primary, mobile-responsive secondary
+- No native app requirements
+
+**Browser/OS Support:**
+- Desktop: Windows 10+, macOS 10.15+, Linux (Ubuntu 20.04+)
+- Mobile: iOS 14+, Android 10+ (responsive web view)
+- Accessibility: Keyboard navigation support, screen reader compatible (WCAG 2.1 AA)
+
+**Performance Requirements:**
+- Initial page load: <3 seconds on broadband
+- Response generation: <2 seconds for cached queries, <5 seconds for novel queries
+- Supports 10+ concurrent users without degradation
+- Works on connections ≥5 Mbps
+
+### Technology Preferences
+
+**Frontend:**
+- Framework: Streamlit (Python-based, rapid development)
+- Alternative consideration: Gradio (similar simplicity, different API)
+- Styling: Custom CSS for terminal aesthetics
+- No React/Vue/Angular needed for MVP (Streamlit handles UI)
+
+**Backend:**
+- Language: Python 3.9+
+- LLM: Llama 2 or Llama 3 (open-source, local or cloud)
+- Embedding: sentence-transformers (all-MiniLM-L6-v2 or similar)
+- Vector DB: FAISS (lightweight, local, no cloud dependencies)
+
+**Database:**
+- Vector storage: FAISS index files (local filesystem)
+- Document storage: Raw PDFs in project directory
+- No traditional database needed for MVP
+
+**Hosting/Infrastructure:**
+- Development: Local Python environment
+- Production: Streamlit Cloud (free tier) or Hugging Face Spaces
+- Alternative: Render, Railway, or DigitalOcean App Platform
+- No Kubernetes/Docker complexity needed initially
+
+### Architecture Considerations
+
+**Repository Structure:**
+- Monorepo approach (single repository for simplicity)
+- Clear separation: `/docs` (source PDFs), `/data` (FAISS index), `/app` (Streamlit code)
+
+**Service Architecture:**
+- Monolithic application (Streamlit handles routing, UI, and backend logic)
+- No microservices needed for MVP
+- Future consideration: Separate API service if non-web clients needed
+
+**Integration Requirements:**
+- External: None required (fully self-contained)
+- Future: Email service (SendGrid/Mailgun) for chat summaries
+- Future: Analytics service (Plausible/Simple Analytics) for privacy-respecting metrics
+
+**Security/Compliance:**
+- No user data collection (anonymous, stateless)
+- No PII storage beyond public portfolio information
+- Rate limiting to prevent abuse (Streamlit built-in)
+- Input sanitization for LLM prompts
+- No GDPR/CCPA concerns (no personal data of visitors stored)
+
+---
+
+## Constraints & Assumptions
+
+### Constraints
+
+**Budget:**
+- $0 for MVP (use free tiers and open-source tools)
+- Willing to upgrade to paid hosting (~$10-20/month) if traffic justifies
+
+**Timeline:**
+- MVP target: 1-2 weeks (part-time development, ~20-30 hours total)
+- Polish and launch: Additional 1 week
+- Total to production: 3-4 weeks
+
+**Resources:**
+- Solo developer (no team)
+- Evenings and weekends availability
+- Existing hardware: Laptop capable of running Llama locally for testing
+
+**Technical:**
+- Must use open-source LLM (no OpenAI API costs)
+- Must work on free hosting tier initially
+- Cannot require users to install anything locally
+- Must be maintainable by single developer
+
+### Key Assumptions
+
+1. **Llama models can run efficiently enough** on affordable hosting or local development for acceptable response times (<5s).
+
+2. **Streamlit's limitations are acceptable** - No need for complex state management, real-time features, or advanced routing for MVP.
+
+3. **Personal documents contain sufficient information** - Existing resume, project READMEs, and notes provide adequate content for RAG to generate useful responses.
+
+4. **Target audience appreciates terminal aesthetics** - Technical recruiters and developers will view retro-terminal design as a positive differentiator, not outdated.
+
+5. **Simple RAG implementation is sufficient** - Basic chunking and FAISS similarity search will provide relevant context without advanced techniques (re-ranking, hybrid search, etc.).
+
+6. **Personality can be achieved through prompts** - System prompt instructions are adequate to maintain consistent witty/helpful/enthusiastic tone without fine-tuning.
+
+7. **No real-time collaboration needed** - Single-user, stateless sessions are acceptable; no need for multi-user chat or history.
+
+8. **Free hosting tier supports expected traffic** - Initial portfolio traffic (~50-200 visitors/month) fits within Streamlit Cloud or Hugging Face Spaces free tier limits.
+
+---
+
+## Risks & Open Questions
+
+### Key Risks
+
+1. **LLM Response Quality Risk:**
+   - Description: Llama may generate irrelevant, hallucinated, or off-brand responses despite RAG context.
+   - Impact: Damages portfolio brand, wastes visitor time, reduces engagement.
+   - Mitigation: Extensive testing with diverse queries; clear system prompts; fallback to "I don't have information about that" for low-confidence responses.
+
+2. **Performance Risk:**
+   - Description: Response times may exceed acceptable thresholds (>5s) on free hosting tier, especially under concurrent load.
+   - Impact: Poor user experience, visitors abandon before seeing capabilities.
+   - Mitigation: Implement semantic caching for common queries; optimize embedding model; consider upgrading hosting if traffic justifies; add "thinking" animation to set expectations.
+
+3. **Content Gap Risk:**
+   - Description: Personal documents may not cover important topics visitors want to explore.
+   - Impact: Chatbot provides unsatisfying "I don't know" responses, reducing value.
+   - Mitigation: Conduct beta testing to identify common questions; augment document collection; craft good fallback responses that guide users to covered topics.
+
+4. **Inappropriate Query Risk:**
+   - Description: Visitors may attempt to jailbreak, troll, or submit offensive content.
+   - Impact: Bot generates inappropriate responses or crashes, damages professional brand.
+   - Mitigation: Implement content filtering; test common jailbreak attempts; graceful error handling with personality-consistent boundaries.
+
+5. **Technical Complexity Risk:**
+   - Description: RAG + LLM + custom UI may be more complex than anticipated, delaying MVP.
+   - Impact: Timeline extends beyond 3-4 weeks, motivation wanes, project stalls.
+   - Mitigation: Use proven libraries (LangChain/LlamaIndex for RAG abstraction); follow tutorials; scope creep prevention; MVP-first mindset.
+
+### Open Questions
+
+1. **What's the optimal chunk size for personal documents?**
+   - Consideration: Longer chunks (2k) provide more context but less precision; shorter chunks (500) are more precise but may lose context.
+   - Decision needed: After initial testing with 1k baseline.
+
+2. **Should the bot have different personalities for different question types?**
+   - Consideration: Technical questions could be more formal, personal questions more casual.
+   - Decision needed: During personality prompt crafting; probably start uniform for consistency.
+
+3. **How to handle questions outside document scope gracefully?**
+   - Consideration: Generic "I don't know" vs. suggesting related topics vs. general LLM knowledge.
+   - Decision needed: Test user reactions to different approaches in beta.
+
+4. **What's the right balance between automation and manual curation of responses?**
+   - Consideration: Fully automated (RAG only) vs. pre-scripted responses for FAQs vs. hybrid.
+   - Decision needed: Likely hybrid - RAG for most, pre-scripted for critical intro and common questions.
+
+5. **Should responses cite sources (specific documents/sections)?**
+   - Consideration: Transparency and trust-building vs. interrupting conversational flow.
+   - Decision needed: Possibly as optional feature ("sources" command) rather than inline.
+
+### Areas Needing Further Research
+
+1. **Llama Model Selection:**
+   - Research best Llama variant for conversational use (Llama 2 Chat vs. Llama 3 vs. fine-tuned variants)
+   - Compare performance vs. quality tradeoffs
+   - Investigate quantization options (4-bit, 8-bit) for inference speed
+
+2. **Embedding Model Optimization:**
+   - Compare sentence-transformers models for speed/quality balance
+   - Test domain-specific embeddings if available
+   - Investigate asymmetric embeddings (different for queries vs. documents)
+
+3. **Streamlit Customization Limits:**
+   - How extensively can Streamlit be styled for terminal aesthetics?
+   - What are workarounds for Streamlit's auto-rerun behavior?
+   - Best practices for managing session state in Streamlit
+
+4. **Hosting Provider Comparison:**
+   - Streamlit Cloud vs. Hugging Face Spaces vs. Render
+   - Cold start times and warm-up strategies
+   - Resource limits and scaling options on free tiers
+
+5. **Analytics & Monitoring:**
+   - Privacy-respecting analytics options (Plausible, Simple Analytics)
+   - Error tracking for production issues (Sentry alternatives)
+   - LLM response monitoring (cost, latency, quality metrics)
+
+---
+
+## Appendices
+
+### A. Research Summary
+
+**Brainstorming Session Key Findings:**
+- Terminal aesthetics provide both differentiation and technical credibility
+- Personality (witty, helpful, enthusiastic) must be authentic, not corporate generic
+- Balance of achievements and challenges/lessons learned builds trust
+- Proactive topic introduction and assumption challenging improve engagement
+
+**Technical Feasibility:**
+- Streamlit provides fastest path to terminal-style web interface
+- FAISS is ideal for local, lightweight vector search without cloud dependencies
+- System prompts can handle personality without complex pipelines
+- All core technologies are proven and well-documented
+
+### B. Stakeholder Input
+
+**Self-Reflection (Developer):**
+- Strong preference for simple, maintainable solution over complex architecture
+- Values authentic representation over polished corporate image
+- Willing to iterate and improve based on actual usage patterns
+- Excited about demonstrating AI/ML capabilities in action
+
+**Anticipated Recruiter Feedback:**
+- Novelty will create memorable first impression
+- Need clear path from chatbot to traditional resume/projects
+- Value transparency about skills and experience level
+- Appreciate efficiency (quick answers without navigation)
+
+**Anticipated Developer Peer Feedback:**
+- Respect for technical implementation choices
+- Appreciation for open-source approach
+- Interest in terminal aesthetic execution
+- Curiosity about RAG implementation details
+
+### C. References
+
+**Technical Documentation:**
+- Streamlit: https://docs.streamlit.io/
+- FAISS: https://github.com/facebookresearch/faiss
+- Llama: https://ai.meta.com/llama/
+- LangChain: https://python.langchain.com/docs/get_started/introduction
+- sentence-transformers: https://www.sbert.net/
+
+**Design Inspiration:**
+- Windows Terminal documentation
+- Retro terminal aesthetics (Cool Retro Term)
+- Developer portfolio examples with unique interactions
+
+**Related Projects:**
+- GitHub Copilot Chat (conversational coding assistant)
+- Perplexity AI (conversational search with citations)
+- Character.AI (personality-driven chatbots)
+
+---
+
+## Next Steps
+
+### Immediate Actions
+
+1. **Set up development environment**
+   - Install Python 3.9+, Streamlit, FAISS, sentence-transformers
+   - Test basic Streamlit app and Llama model locally
+   - Verify all dependencies install correctly
+
+2. **Collect and organize personal documents**
+   - Gather resume, project READMEs, blog posts, personal notes
+   - Convert all to PDF format for consistent processing
+   - Create `/docs` directory structure
+
+3. **Create technical spike for RAG pipeline**
+   - Implement minimal PDF → embedding → FAISS pipeline
+   - Test retrieval quality with sample queries
+   - Benchmark performance and adjust chunk size
+
+4. **Draft personality system prompt**
+   - Write guidelines for witty, helpful, enthusiastic tone
+   - Create examples of good vs. bad responses
+   - Test with Llama model to refine
+
+5. **Design terminal UI mockup**
+   - Sketch layout and color scheme
+   - Identify key Streamlit components needed
+   - Plan CSS customization approach
+
+### PM Handoff
+
+This Project Brief provides the full context for the Personal Portfolio Chatbot. Please start in **'PRD Generation Mode'**, review the brief thoroughly to work with the user to create the PRD section by section as the template indicates, asking for any necessary clarification or suggesting improvements.
+
+**Key Focus Areas for PRD:**
+1. Detailed functional requirements for each core feature
+2. Specific technical constraints and architecture decisions
+3. User story breakdown for iterative development
+4. Acceptance criteria that validate MVP success criteria
+5. Epic structure that enables 1-2 week timeline
+
+**Critical Considerations:**
+- Keep scope tightly focused on MVP features
+- Ensure technical requirements are achievable for solo developer
+- Balance technical showcase goals with practical implementation
+- Maintain authentic personality throughout requirements
