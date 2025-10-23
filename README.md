@@ -89,15 +89,27 @@ npm run dev
 ```
 diego-chatbot/
 ├── src/                    # React frontend
-│   ├── App.tsx            # Main terminal component
-│   ├── App.css            # Terminal styling
-│   └── index.css          # Global styles
-├── data/                   # Document storage
-├── docs/                   # Documentation
-├── api_server.py          # FastAPI backend
-├── chatbot.py             # Original Streamlit chatbot
-├── ingest_database.py     # Document ingestion script
-├── start_backend.py       # Backend startup script
+│   ├── components/        # React components
+│   │   ├── App.tsx       # Main terminal component
+│   │   └── AnimatedAscii.tsx
+│   ├── hooks/            # Custom React hooks
+│   │   └── useAsciiFrames.ts
+│   ├── styles/           # CSS files
+│   │   ├── App.css       # Terminal styling
+│   │   └── index.css     # Global styles
+│   ├── assets/           # Static assets
+│   └── main.tsx          # Entry point
+├── backend/               # Python backend
+│   ├── api_server.py     # FastAPI server
+│   ├── start_backend.py  # Backend startup script
+│   └── utils/            # Utility scripts
+│       └── test_documents.py
+├── data/                  # Document storage
+├── docs/                  # Documentation
+├── public/                # Public static assets
+│   ├── media/            # Media files
+│   └── vite.svg
+├── scripts/               # Build and utility scripts
 ├── requirements.txt       # Python dependencies
 └── package.json          # Node.js dependencies
 ```
