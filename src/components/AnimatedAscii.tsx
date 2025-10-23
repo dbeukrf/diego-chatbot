@@ -7,6 +7,45 @@ interface AsciiAnimationProps {
   scrollMode?: boolean
 }
 
+// Function to get shading class for a character
+const getShadingClass = (char: string): string => {
+  // White/brightest characters - solid blocks
+  if (char === '#' || char === '%') {
+    return 'ascii-shade-white'
+  }
+  // Light characters - stars and plus signs
+  if (char === '*' || char === '+') {
+    return 'ascii-shade-light'
+  }
+  // Medium characters - equals and dashes
+  if (char === '=' || char === '-') {
+    return 'ascii-shade-medium'
+  }
+  // Dark characters - dots and colons
+  if (char === '.' || char === ':') {
+    return 'ascii-shade-dark'
+  }
+  // Black/darkest characters - spaces and newlines
+  if (char === ' ' || char === '\n' || char === '\r') {
+    return 'ascii-shade-black'
+  }
+  // Default for other characters - treat as medium
+  return 'ascii-shade-medium'
+}
+
+// Function to render ASCII with shading
+const renderAsciiWithShading = (asciiText: string): JSX.Element => {
+  return (
+    <>
+      {asciiText.split('').map((char, index) => (
+        <span key={index} className={getShadingClass(char)}>
+          {char}
+        </span>
+      ))}
+    </>
+  )
+}
+
 const AnimatedAscii: React.FC<AsciiAnimationProps> = ({ frames, fps, className = '', scrollMode = false }) => {
   const [currentFrame, setCurrentFrame] = useState(0)
 
@@ -28,7 +67,7 @@ const AnimatedAscii: React.FC<AsciiAnimationProps> = ({ frames, fps, className =
 
   return (
     <pre className={`ascii-art ${className}`}>
-      {frames[currentFrame]}
+      {renderAsciiWithShading(frames[currentFrame])}
     </pre>
   )
 }

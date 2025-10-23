@@ -110,7 +110,7 @@ function App() {
 4. career-analysis <job>                - Compare Diego's skills with a target job role
 5. clear                                - Clear terminal
 
-◽️ Don't forget, you can also just type naturally and I'll answer any of your questions about Diego!`
+➜ You can also just type naturally and I'll answer any of your questions about Diego!`
 
 
       case 'spin-profile':
@@ -197,17 +197,17 @@ function App() {
     <div className="terminal-header">
       {asciiLoading ? (
         <div className="terminal-title">
-          Career Navigator & Talent Curator
+          Diego Beuk's AI DJ
         </div>
       ) : error ? (
         <div className="header-content">
           <span className="error-text">Error loading ASCII art</span>
-          <span className="title-text">Career Navigator & Talent Curator</span>
+          <span className="title-text">Diego Beuk's AI DJ</span>
         </div>
       ) : (
         <>
           <div className="header-content">
-            <span className="title-text">Career Navigator & Talent Curator</span>
+            <span className="title-text">Diego Beuk's AI DJ</span>
           </div>
           <div className="ascii-container">
             <AnimatedAscii 

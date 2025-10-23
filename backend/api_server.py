@@ -94,7 +94,8 @@ def initialize_chatbot():
             persist_directory=CHROMA_PATH,
         )
         
-        # Set up retriever
+        # Set up retriever 
+        # TODO: Look at modifying the k value, chunk size, and chunk overlap, and temperature value for the LLM.
         retriever = vector_store.as_retriever(search_kwargs={'k': 5})
         
         return True

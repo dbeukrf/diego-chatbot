@@ -2,7 +2,9 @@
 .terminal-container {
   width: 100vw;
   height: 100vh;
-  background: #0c0c0c;
+  background: 
+    linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+    url('media/samsung-galaxy-note10-bubble-dark-stock-black-background-3040x3040-727.jpg') center/cover no-repeat;
   color: #D7FFF1;
   font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-size: 14px;
@@ -14,12 +16,12 @@
 
 /* Terminal Header */
 .terminal-header {
-  background: #1a1a1a;
+  background: rgba(0, 0, 0, 0.4);
   padding: 8px 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid #bcbfff;
   min-height: 100px; /* Fit ASCII frame height */
   overflow: hidden;
   position: relative; /* needed for absolute positioning */
@@ -28,7 +30,7 @@
 .terminal-title {
   color: #D7FFF1;
   font-weight: bold;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 /* Header with ASCII Animation */
@@ -44,7 +46,7 @@
 .title-text {
   color: #D7FFF1;
   font-weight: bold;
-  font-size: 13px;
+  font-size: 14px;
   white-space: nowrap;
   flex-shrink: 0;
   z-index: 2;
@@ -71,12 +73,36 @@
   font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
   font-size: 8px;
   line-height: 1;
-  color: #AAD3EE;
+  color: #bcbfff;
   margin: 0;
   padding: 0;
   white-space: pre;
   text-align: left;
   position: static;
+}
+
+/* ASCII Shading Classes */
+.ascii-shade-white {
+  color: #bcbfff;
+  text-shadow: 0 0 2px #bcbfff;
+}
+
+.ascii-shade-light {
+  color: #E0E0E0;
+  text-shadow: 0 0 1px #E0E0E0;
+}
+
+.ascii-shade-medium {
+  color: #A0A0A0;
+}
+
+.ascii-shade-dark {
+  color: #606060;
+}
+
+.ascii-shade-black {
+  color: #202020;
+  text-shadow: 0 0 1px #000000;
 }
 
 .error-text {
@@ -95,7 +121,6 @@
   flex: 1;
   padding: 16px;
   overflow-y: auto;
-  background: #0c0c0c;
   scrollbar-width: thin;
   scrollbar-color: #333 #0c0c0c;
 }
@@ -128,11 +153,11 @@
 }
 
 .message.response {
-  color: #AAD3EE;
+  color: #bcbfff;
 }
 
 .message.system {
-  color: #AAD3EE;
+  color: #bcbfff;
 }
 
 /* Prompts */
@@ -159,11 +184,11 @@
 
 /* Response prompt now uses system-prompt styling */
 .system-prompt {
-  color: #AAD3EE;
+  color: #bcbfff;
   font-weight: bold;
   margin-right: 8px;
   flex-shrink: 0;
-  text-shadow: 0 0 5px #AAD3EE, 0 0 10px #AAD3EE;
+  text-shadow: 0 0 5px #bcbfff, 0 0 10px #bcbfff;
   display: flex;
   align-items: center;
 }
