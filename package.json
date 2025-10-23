@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start:backend": "python backend/start_backend.py",
+    "start:backend": "start_backend.bat",
     "start:frontend": "npm run dev",
     "start:all": "concurrently \"npm run start:backend\" \"npm run start:frontend\""
   },

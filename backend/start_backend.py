@@ -9,15 +9,16 @@ import os
 from pathlib import Path
 
 def main():
-    # Change to the script directory
-    script_dir = Path(__file__).parent
-    os.chdir(script_dir)
+    # Change to the project root directory
+    project_root = Path(__file__).parent.parent
+    os.chdir(project_root)
     
     print("Starting Diego Chatbot Backend API Server...")
     print("Working directory:", os.getcwd())
     
     # Check if .env file exists
-    if not os.path.exists('.env'):
+    env_path = project_root / '.env'
+    if not env_path.exists():
         print("Warning: .env file not found. Please create one with your API keys.")
         print("Required variables: OPENAI_API_KEY, LANGCHAIN_API_KEY")
     

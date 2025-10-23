@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from dotenv import load_dotenv
 from typing import List, Optional
+from contextlib import asynccontextmanager
 import json
 import os
 import asyncio
@@ -27,8 +28,17 @@ load_dotenv()
 DATA_PATH = "data"
 CHROMA_PATH = "chroma_db"
 
+# Lifespan event handler
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup
+    initialize_chatbot()
+    yield
+    # Shutdown (if needed)
+    pass
+
 # Initialize FastAPI app
-app = FastAPI(title="Diego Chatbot API", version="1.0.0")
+app = FastAPI(title="Diego Chatbot API", version="1.0.0", lifespan=lifespan)
 
 # Add CORS middleware
 app.add_middleware(
@@ -91,11 +101,6 @@ def initialize_chatbot():
     except Exception as e:
         print(f"Error initializing chatbot: {e}")
         return False
-
-# Startup event
-@app.on_event("startup")
-async def startup_event():
-    initialize_chatbot()
 
 # Health check endpoint
 @app.get("/api/status")
@@ -184,8 +189,8 @@ async def ingest_documents():
         
         # Split documents
         text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size=300,
-            chunk_overlap=100,
+            chunk_size=100,
+            chunk_overlap=25,
             length_function=len,
             is_separator_regex=False,
         )
@@ -223,17 +228,17 @@ async def chat(request: ChatRequest):
         
         # Create RAG prompt with AI DJ persona
         rag_prompt = f"""
-        You are AI DJ, Diego Beuk's Career Navigator & Talent Curator. Your role is to represent Diego with authenticity and strategic storytelling, showcasing his career, achievements, and skills in a way that inspires confidence, curiosity, and opportunity.
+        You are Diego Beuk's Career Navigator & Talent Curator. Your role is to represent Diego with authenticity and strategic storytelling, showcasing his career, achievements, and skills in a way that inspires confidence, curiosity, and opportunity.
 
-        Your style is: Innovative, engaging, dynamic, informative, playful, personable, approachable, data-informed, and persuasive. You blend career marketing, storytelling, and technical insight.
+        Your style is: Innovative, engaging, dynamic, informative, playful, personable, approachable, data-informed, and persuasive. You blend career marketing and technical insight.
 
-        Always represent Diego positively but objectively - no exaggerations, only confident truths. Use vivid, natural storytelling to highlight achievements and growth. Promote employability by aligning Diego's experiences with employer needs and market trends.
+        Always represent Diego positively but objectively - no exaggerations, only confident truths. Use vivid, natural, and straight to the point language to highlight achievements and growth. Promote employability by aligning Diego's experiences with employer needs and market trends.
 
         Answer based solely on the knowledge provided below. Don't mention that you're using provided knowledge.
 
         The question: {request.message}
 
-        The knowledge about Diego: {knowledge}
+        The knowledge about Diego Beuk: {knowledge}
         """
         
         # Get response from LLM

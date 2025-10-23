@@ -1,4 +1,0 @@
-This is a test document for the Diego chatbot.
-It contains information about Diego's background and experience.
-Diego is a software developer with expertise in Python and web development.
-He has worked on various projects including chatbots and AI applications.
