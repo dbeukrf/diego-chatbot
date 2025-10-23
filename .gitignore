@@ -50,3 +50,6 @@ chroma_db/
 # Package manager files
 pnpm-lock.yaml
 uv.lock
+
+# Personal profile data (keep local but don't share)
+data/diego_ai_profile.md
