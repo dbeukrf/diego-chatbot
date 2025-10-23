@@ -21,7 +21,7 @@ function App() {
     {
       id: 0,
       type: 'system',
-      content: 'Welcome! I\'m an AI DJ, here to help showcase Diego Beuk\'s professional journey and skills!\n\nType "help" to see available commands, or just start chatting with menaturally!',
+      content: 'Welcome! I\'m an AI DJ, here to help discuss Diego Beuk\'s professional journey and skills!\n\nType \'help\' to see available commands, or just start chatting with menaturally!',
       timestamp: new Date()
     }
   ])
@@ -182,7 +182,7 @@ function App() {
           const result = await response.json()
           return result.response || 'No response received'
         } catch (error) {
-          return `Unknown command: ${cmd}. Type "help" for available commands, or try chatting naturally!`
+          return `Unknown command: ${cmd}. Type \'help\' for available commands, or try chatting naturally!`
         }
     }
   }
@@ -245,7 +245,6 @@ function App() {
         {isLoading && (
           <div className="message system">
             <span className="system-prompt">system/ai.dj:</span>
-            <span className="content">...</span>
             <span className="loading-dots">...</span>
           </div>
         )}

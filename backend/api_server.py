@@ -26,7 +26,7 @@ load_dotenv()
 
 # Configuration
 DATA_PATH = "data"
-CHROMA_PATH = "chroma_db"
+CHROMA_PATH = "backend/chroma_db"
 
 # Lifespan event handler
 @asynccontextmanager
@@ -98,9 +98,96 @@ def initialize_chatbot():
         # TODO: Look at modifying the k value, chunk size, and chunk overlap, and temperature value for the LLM.
         retriever = vector_store.as_retriever(search_kwargs={'k': 5})
         
+        # Check if documents are already ingested
+        try:
+            collection = vector_store._collection
+            if collection and collection.count() > 0:
+                print(f"Vectorstore already contains {collection.count()} documents. Skipping ingestion.")
+            else:
+                print("Vectorstore is empty. Ingesting documents...")
+                # Automatically ingest documents during startup
+                ingest_documents_sync()
+        except Exception as e:
+            print(f"Warning: Could not check vectorstore status: {e}")
+            print("Attempting to ingest documents...")
+            ingest_documents_sync()
+        
         return True
     except Exception as e:
         print(f"Error initializing chatbot: {e}")
+        return False
+
+# Synchronous document ingestion for startup
+def ingest_documents_sync():
+    """Synchronously ingest documents during startup"""
+    try:
+        if not os.path.exists(DATA_PATH):
+            print(f"Warning: Data directory not found at {DATA_PATH}")
+            return False
+        
+        # Load documents from multiple sources
+        raw_documents = []
+        
+        # Load PDF documents
+        try:
+            pdf_loader = PyPDFDirectoryLoader(DATA_PATH)
+            pdf_docs = pdf_loader.load()
+            raw_documents.extend(pdf_docs)
+            print(f"Loaded {len(pdf_docs)} PDF documents")
+        except Exception as e:
+            print(f"Warning: Could not load PDF documents: {e}")
+        
+        # Load text documents
+        try:
+            txt_loader = DirectoryLoader(
+                DATA_PATH, 
+                glob="**/*.txt", 
+                loader_cls=TextLoader
+            )
+            txt_docs = txt_loader.load()
+            raw_documents.extend(txt_docs)
+            print(f"Loaded {len(txt_docs)} text documents")
+        except Exception as e:
+            print(f"Warning: Could not load text documents: {e}")
+        
+        # Load markdown documents as text
+        try:
+            md_loader = DirectoryLoader(
+                DATA_PATH, 
+                glob="**/*.md", 
+                loader_cls=TextLoader
+            )
+            md_docs = md_loader.load()
+            raw_documents.extend(md_docs)
+            print(f"Loaded {len(md_docs)} markdown documents")
+        except Exception as e:
+            print(f"Warning: Could not load markdown documents: {e}")
+        
+        if not raw_documents:
+            print("No documents found in data directory. Supported formats: PDF, MD, TXT")
+            return False
+        
+        # Split documents
+        text_splitter = RecursiveCharacterTextSplitter(
+            chunk_size=100,
+            chunk_overlap=25,
+            length_function=len,
+            is_separator_regex=False,
+        )
+        
+        chunks = text_splitter.split_documents(raw_documents)
+        
+        # Create unique IDs
+        uuids = [str(uuid4()) for _ in range(len(chunks))]
+        
+        # Add to vector store
+        vector_store.add_documents(documents=chunks, ids=uuids)
+        
+        print(f"Successfully ingested {len(chunks)} document chunks")
+        return True
+        
+    except Exception as e:
+        print(f"Error ingesting documents: {e}")
         return False
 
 # Health check endpoint
@@ -229,7 +316,7 @@ async def chat(request: ChatRequest):
         
         # Create RAG prompt with AI DJ persona
         rag_prompt = f"""
-        You are Diego Beuk's Career Navigator & Talent Curator. Your role is to represent Diego with authenticity and strategic storytelling, showcasing his career, achievements, and skills in a way that inspires confidence, curiosity, and opportunity.
+        You are Diego Beuk's Career Scout & Talent Curator. Your role is to represent Diego with authenticity and strategic storytelling, showcasing his career, achievements, and skills in a way that inspires confidence, curiosity, and opportunity.
 
         Your style is: Innovative, engaging, dynamic, informative, playful, personable, approachable, data-informed, and persuasive. You blend career marketing and technical insight.
 
