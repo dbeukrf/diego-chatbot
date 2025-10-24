@@ -1,17 +1,17 @@
-# Diego Beuk's AI DJ Chatbot
+# Diego Beuk's Standalone AI DJ Chatbot
 
-A terminal-style web interface featuring an AI-powered career assistant, built with React, FastAPI, ChromaDB, and RAG (Retrieval Augmented Generation) to answer career enquiries about Diego Beuk.
+A terminal-style web interface featuring an AI-powered career assistant, built with React, FastAPI, ChromaDB, and Retrieval Augmented Generation (RAG) to intelligently answer career-related questions about Diego Beuk.
 
 ## Features
 
-- 🎵 **AI DJ Persona**: Diego's career-focused AI assistant with a unique DJ-inspired interface
-- 🖥️ **Terminal-style Interface**: Authentic terminal experience with command history, autocomplete, and keyboard shortcuts
-- 📄 **Multi-format Document Support**: Process PDF, Markdown (.md), and text (.txt) documents
-- 🤖 **Advanced RAG Chat**: Chat with Diego's AI DJ about his career, skills, and experience using intelligent document retrieval
-- ⚡ **Real-time**: Fast, responsive interface with real-time chat capabilities
-- 🎨 **Animated ASCII Art**: Dynamic terminal header with animated ASCII frames
-- 🔍 **Smart Retrieval**: Intelligent document chunking and vector search for accurate responses
-- 🎯 **Career-Focused Commands**: Specialized commands for career analysis, skill amplification, and profile generation
+- AI DJ Persona: A career-focused AI assistant with a unique DJ-inspired identity
+- Terminal-Style Interface: Authentic terminal experience with command history, autocomplete, and keyboard shortcuts
+- Multi-Format Document Support: Processes PDF, Markdown (.md), and text (.txt) files
+- Advanced RAG Chat: Context-aware chat about Diego’s career, skills, and experience using intelligent document retrieval
+- Real-Time Performance: Fast and responsive interface for natural, interactive conversation
+- Animated ASCII Art: Dynamic terminal header with ASCII frame animation
+- Smart Retrieval: Intelligent document chunking and vector search for accurate answers
+- Career-Focused Commands: Commands tailored for career exploration, skill analysis, and profile generation
 
 ## Commands
 
@@ -88,7 +88,7 @@ npm run dev
 
 1. **Start the application** using one of the methods above
 2. **Documents are automatically ingested** on startup from the `data/` folder
-3. **Chat with Diego's AI DJ**: Use the specialized commands or chat naturally:
+3. **Chat with Diego's AI DJ**: Interact with the AI DJ via commands or natural language:
    - `spin-profile` - Get a recruiter-ready summary
    - `amplify Python` - Deep dive into specific skills
    - `career-analysis AI Developer` - Compare skills with job roles
@@ -99,42 +99,42 @@ npm run dev
 
 ```
 diego-chatbot/
-├── src/                           # React frontend
-│   ├── components/               # React components
-│   │   ├── App.tsx              # Main terminal component with AI DJ interface
-│   │   └── AnimatedAscii.tsx    # ASCII animation component
-│   ├── hooks/                    # Custom React hooks
-│   │   └── useAsciiFrames.ts    # Hook for loading ASCII animation frames
-│   ├── styles/                  # CSS files
-│   │   ├── App.css              # Terminal styling and animations
-│   │   └── index.css            # Global styles
-│   ├── assets/                  # Static assets
-│   └── main.tsx                 # Entry point
-├── backend/                      # Python backend
-│   ├── api_server.py            # FastAPI server with RAG implementation
-│   ├── start_backend.py         # Backend startup script
-│   ├── chroma_db/               # Vector database storage
-│   └── utils/                   # Utility scripts
-│       └── test_documents.py    # Document testing utilities
-├── data/                         # Document storage
-│   ├── diego_ai_profile.md      # Diego's AI profile document
-│   └── DiegoBeukResume.pdf      # Diego's resume
-├── docs/                         # Documentation
-│   ├── diegobeuk-system.md       # AI DJ system configuration
-│   ├── TODO                      # Development roadmap
+├── src/                          
+│   ├── components/               
+│   │   ├── App.tsx              
+│   │   └── AnimatedAscii.tsx    
+│   ├── hooks/                    
+│   │   └── useAsciiFrames.ts    
+│   ├── styles/                  
+│   │   ├── App.css              
+│   │   └── index.css            
+│   ├── assets/                  
+│   └── main.tsx                 
+├── backend/                      
+│   ├── api_server.py            
+│   ├── start_backend.py         
+│   ├── chroma_db/               
+│   └── utils/                   
+│       └── test_documents.py    
+├── data/                         
+│   ├── diego_ai_profile.md      
+│   └── DiegoBeukResume.pdf      
+├── docs/                         
+│   ├── diegobeuk-system.md      
+│   ├── TODO                     
 │   └── [other documentation files]
-├── public/                       # Public static assets
-│   ├── media/                   # Media files
-│   │   ├── ascii_frames/        # ASCII animation frames
-│   │   └── [background images]
-│   └── vite.svg
-├── scripts/                      # Build and utility scripts
-│   ├── start.bat                # Windows startup script
-│   └── start.sh                 # Unix startup script
-├── requirements.txt              # Python dependencies
-├── package.json                  # Node.js dependencies and scripts
-├── pnpm-lock.yaml               # pnpm lock file
-└── start_backend.bat            # Windows backend startup
+├── public/                       
+│   ├── media/                   
+│   │   ├── ascii_frames/        
+│   │   └── [background images]  
+│   └── vite.svg                 
+├── scripts/                      
+│   ├── start.bat                
+│   └── start.sh                 
+├── requirements.txt              
+├── package.json                  
+├── pnpm-lock.yaml                
+└── start_backend.bat            
 ```
 
 ## API Endpoints
@@ -155,10 +155,10 @@ Diego's AI DJ is designed as a **Career Scout & Talent Curator** with the follow
 
 - **Role**: Insightful Career Navigator & Talent Curator
 - **Mission**: Represent Diego with authenticity and strategic storytelling
-- **Style**: Innovative, engaging, dynamic, informative, playful, personable, approachable, data-informed, and persuasive
+- **Style**: Engaging, informative, approachable, and data-driven
 - **Focus**: Showcase Diego's professional journey, communicate experiences clearly, and tailor content for employers and recruiters
 
-The AI DJ blends career marketing, storytelling, and technical insight to help Diego stand out to potential employers and collaborators.
+This persona blends storytelling, technical understanding, and AI-driven insight to position Diego effectively in professional contexts.
 
 ## Technology Stack
 
