@@ -1,0 +1,107 @@
+# Diego Beuk AI Chatbot Knowledge Base TODO List
+
+*A comprehensive checklist of topics and details to include in the Diego AI profile document for RAG chatbot retrieval.*
+
+---
+
+| Section                                        | Task                                                              | Priority | Progress |
+| ---------------------------------------------- | ----------------------------------------------------------------- | -------- | -------- |
+| **1. Metadata & Structure for RAG**            | Add document metadata (title, version, tags, last updated)        | High     | ✅       |
+|                                                | Include semantic summary for quick retrieval                      | High     | ✅       |
+|                                                | Add embedding keywords (skills, tools, traits)                    | Medium   | ✅       |
+|                                                | Define chatbot tone and style hints                               | Medium   | ✅       |
+|                                                | Add dataset segmentation with clear section headings              | Low      | ✅       |
+| **2. Current Identity & Professional Summary** | Create a professional tagline or one-liner                        | High     | ☐        |
+|                                                | Write a short professional mission statement                      | High     | ☐        |
+|                                                | Add an elevator pitch summary                                     | High     | ☐        |
+|                                                | Highlight top 3 technical focus areas                             | Medium   | ☐        |
+|                                                | Highlight top 3 soft skills                                       | Medium   | ☐        |
+|                                                | Add a 1-line memorable personality hook                           | Low      | ☐        |
+| **3. Experience Deep Dives**                   | Rewrite each job using STAR format                                | High     | ☐        |
+|                                                | Add tools & technologies used per role                            | High     | ☐        |
+|                                                | Include key learnings and challenges overcome                     | Medium   | ☐        |
+|                                                | Provide measurable impact or metrics                              | Medium   | ☐        |
+|                                                | Highlight leadership and collaboration moments                    | Medium   | ☐        |
+|                                                | Note primary stakeholders involved per project                    | Low      | ☐        |
+| **4. Projects & Case Studies**                 | Add project summaries (problem → approach → result)               | High     | ☐        |
+|                                                | Include tech stacks and architecture notes                        | Medium   | ☐        |
+|                                                | Add GitHub/demo links where possible                              | High     | ☐        |
+|                                                | Explain project motivations and outcomes                          | Medium   | ☐        |
+|                                                | Distinguish project types (research, product, prototype)          | Low      | ☐        |
+|                                                | Add chatbot context notes for projects                            | Low      | ☐        |
+| **5. AI-Specific Experience**                  | List AI systems built (LangChain, RAG, FastAPI integrations)      | High     | ☐        |
+|                                                | Add datasets and embedding details                                | Medium   | ☐        |
+|                                                | Mention APIs integrated (OpenAI, Gemini, etc.)                    | High     | ☐        |
+|                                                | Include vector database usage examples                            | Medium   | ☐        |
+|                                                | Describe agent frameworks explored                                | Medium   | ☐        |
+|                                                | Outline architecture of AI DJ chatbot                             | High     | ☐        |
+|                                                | Add performance optimization experiences                          | Low      | ☐        |
+|                                                | Describe prompt engineering techniques learned                    | Medium   | ☐        |
+| **6. Learning & Growth**                       | Add ongoing learning goals and courses                            | High     | ☐        |
+|                                                | Include certifications and workshops                              | Medium   | ☐        |
+|                                                | Mention independent study or R&D projects                         | High     | ☐        |
+|                                                | Add current reading list or research topics                       | Low      | ☐        |
+|                                                | List communities and mentorship activities                        | Medium   | ☐        |
+|                                                | Highlight current technologies being mastered                     | High     | ☐        |
+| **7. Global & Cultural Context**               | List countries lived/studied/worked in                            | Medium   | ☐        |
+|                                                | Add languages spoken (and usage contexts)                         | High     | ☐        |
+|                                                | Describe cross-cultural teamwork experiences                      | Medium   | ☐        |
+|                                                | Mention international collaborations                              | Low      | ☐        |
+|                                                | Clarify global work eligibility (PR/citizenships)                 | High     | ☐        |
+|                                                | Explain how international experience shaped perspective           | Medium   | ☐        |
+| **8. Communication & Soft Skills**             | Provide examples of translating technical → nontechnical concepts | High     | ☐        |
+|                                                | Include presentation or public speaking experiences               | Medium   | ☐        |
+|                                                | Describe Agile or team facilitation experiences                   | Medium   | ☐        |
+|                                                | Add writing or documentation strengths                            | Low      | ☐        |
+|                                                | Include empathy examples in teamwork                              | High     | ☐        |
+|                                                | Detail remote collaboration skills                                | Medium   | ☐        |
+| **9. Creativity & Human Side**                 | Explain music production process and coding parallels             | High     | ☐        |
+|                                                | Add artistic inspirations in problem-solving                      | Medium   | ☐        |
+|                                                | Describe how film/storytelling influences design thinking         | Medium   | ☐        |
+|                                                | Include creative problem-solving stories                          | High     | ☐        |
+|                                                | Reflect on creativity philosophy in tech                          | Low      | ☐        |
+| **10. Career Vision & Future Goals**           | Add 1-year, 3-year, 5-year career goals                           | High     | ☐        |
+|                                                | Specify desired industries or technologies                        | Medium   | ☐        |
+|                                                | Define long-term ambitions (founder, researcher, etc.)            | High     | ☐        |
+|                                                | Clarify developer → leader growth plan                            | Medium   | ☐        |
+|                                                | Describe ideal work culture and team environment                  | Medium   | ☐        |
+| **11. Ask Me About / Q&A Reference**           | Add "Ask Me About" prompts for key projects and experiences       | High     | ☐        |
+|                                                | Include short Q&A for common recruiter questions                  | Medium   | ☐        |
+|                                                | Provide examples for challenges, creativity, and leadership       | High     | ☐        |
+|                                                | Add chatbot-specific response guidance                            | Medium   | ☐        |
+| **12. Recruiter-Specific Sections**            | Define role types sought (AI Dev, Software Eng, etc.)             | High     | ☐        |
+|                                                | Add preferred industries and environments                         | Medium   | ☐        |
+|                                                | Clarify availability and work type (FT/contract)                  | High     | ☐        |
+|                                                | List work authorization and relocation preferences                | High     | ☐        |
+|                                                | Optionally include salary expectation range                       | Low      | ☐        |
+|                                                | Mention what kind of work to avoid                                | Low      | ☐        |
+| **13. Tech Stack Deep Dive**                   | Create skills proficiency matrix (languages, frameworks)          | High     | ☐        |
+|                                                | Add cloud and DevOps experience details                           | Medium   | ☐        |
+|                                                | Include database usage examples                                   | Medium   | ☐        |
+|                                                | Add frontend vs backend strengths comparison                      | Medium   | ☐        |
+|                                                | Mention emerging tools being tested                               | Low      | ☐        |
+|                                                | Define coding philosophy and documentation habits                 | Low      | ☐        |
+| **14. Research & Academic Work**               | Add research titles and publication summaries                     | High     | ☐        |
+|                                                | Describe methodologies used (qualitative/quantitative)            | Medium   | ☐        |
+|                                                | List collaborators or institutions                                | Low      | ☐        |
+|                                                | Include main findings or innovations                              | Medium   | ☐        |
+|                                                | Add links to GitHub or research outputs                           | Low      | ☐        |
+| **15. Reflection & Philosophy**                | Write about coding motivations and frustrations                   | Medium   | ☐        |
+|                                                | Add lessons learned from past failures                            | High     | ☐        |
+|                                                | Include favorite quotes or guiding principles                     | Low      | ☐        |
+|                                                | Describe thoughts on AI ethics and creativity                     | Medium   | ☐        |
+|                                                | Define what success means personally/professionally               | Medium   | ☐        |
+| **16. Testimonials / Endorsements**            | Add quotes from mentors, managers, or peers                       | High     | ☐        |
+|                                                | Include LinkedIn recommendation snippets                          | Medium   | ☐        |
+|                                                | Note awards, scholarships, or recognitions                        | Medium   | ☐        |
+|                                                | Add peer or supervisor feedback examples                          | Low      | ☐        |
+| **17. Online Presence & Branding**             | Link to portfolio site, GitHub, LinkedIn                          | High     | ☐        |
+|                                                | Include blog posts or articles                                    | Medium   | ☐        |
+|                                                | Mention talks or presentations                                    | Low      | ☐        |
+|                                                | Add open-source contributions or hackathons                       | Medium   | ☐        |
+|                                                | Describe personal brand tone/style                                | Medium   | ☐        |
+| **18. Fun & Personal Touch**                   | Add hobbies and interests (music, travel, gaming, etc.)           | Medium   | ☐        |
+|                                                | Include favorite tools or gadgets                                 | Low      | ☐        |
+|                                                | Mention favorite music genres or film inspirations                | Low      | ☐        |
+|                                                | Describe productivity or daily learning habits                    | Medium   | ☐        |
+|                                                | Add human details for chatbot personality enrichment              | Medium   | ☐        |

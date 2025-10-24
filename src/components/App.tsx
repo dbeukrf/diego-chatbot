@@ -21,7 +21,7 @@ function App() {
     {
       id: 0,
       type: 'system',
-      content: 'Welcome! I\'m an AI DJ, here to help discuss Diego Beuk\'s professional journey and skills!\n\nType \'help\' to see available commands, or just start chatting with menaturally!',
+      content: 'Welcome! I\'m an AI DJ, here to help discuss Diego Beuk\'s professional journey and skills!\n\nType \'help\' to see available commands, or just start chatting with me naturally!',
       timestamp: new Date()
     }
   ])

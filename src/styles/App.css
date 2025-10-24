@@ -24,7 +24,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #bcbfff;
+  border-bottom: 1px solid #940b0b;
   min-height: 100px;
   /* Fit ASCII frame height */
   overflow: hidden;
@@ -92,8 +92,8 @@
 
 /* ASCII Shading Classes */
 .ascii-shade-white {
-  color: #5b006d;
-  text-shadow: 0 0 2px #bcbfff;
+  color: #ad0a43;
+  text-shadow: 0 0 2px #000000;
 }
 
 .ascii-shade-light {
@@ -162,13 +162,16 @@
 }
 
 .message.response {
-  color: #bcbfff;
+  color: #ffffff;
   text-shadow: 0 0 12px rgba(188, 191, 255, 0.3), 0 0 12px rgba(188, 191, 255, 0.2);
 }
 
-/* Bold, high-contrast shadow for system messages */
+/* Bold, high-contrast shadow for system messages 
+#cfd4ff - light blue
+#bcbfff - dark blue
+*/
 .message.system {
-  color: #cfd4ff !important;
+  color: #ffffff !important;
   text-shadow:
     0 0 3px rgba(0, 0, 0, 1),
     0 0 6px rgba(0, 0, 0, 0.95),
@@ -201,7 +204,7 @@
 
 /* Response prompt now uses system-prompt styling */
 .system-prompt {
-  color: #cfd4ff !important;
+  color: #ffffff !important;
   font-weight: bold;
   margin-right: 8px;
   flex-shrink: 0;
