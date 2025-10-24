@@ -169,8 +169,8 @@ def ingest_documents_sync():
         
         # Split documents
         text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size=100,
-            chunk_overlap=25,
+            chunk_size=400,
+            chunk_overlap=100,
             length_function=len,
             is_separator_regex=False,
         )
