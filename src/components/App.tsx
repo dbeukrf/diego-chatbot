@@ -106,7 +106,7 @@ function App() {
         return `
 1. help                                 - Show a numbered list of available commands
 2. spin-profile                         - Generate a quick summary of Diego's professional journey
-3. amplify <skill>                      - Expand on a specific skill with examples
+3. amplify <skill>                      - Expand on a specific soft/technical skill with examples
 4. career-analysis <job>                - Compare Diego's skills with a target job role
 5. clear                                - Clear terminal
 
@@ -118,7 +118,7 @@ function App() {
           const response = await fetch('/api/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: 'Generate a recruiter-ready summary of Diego Beuk\'s profile - short, catchy, and impactful. Focus on his key strengths, achievements, and what makes him stand out to employers.' })
+            body: JSON.stringify({ message: 'Generate a recruiter-ready summary of Diego Beuk\'s profile - short, catchy, and impactful. Focus on his key experience, strengths, achievements, and what makes him stand out to employers.' })
           })
           const result = await response.json()
           return result.response || 'No response received'
@@ -165,7 +165,13 @@ function App() {
         return ''
 
       case 'sudo':
-        return `secret command...`
+        return `nice try. this isn't production.`
+
+      case 'whoami':
+        return 'Guest user of Diego Beuk\'s AI DJ ;)'
+
+      case 'rm -rf /':
+        return 'deleting system...' // TODO: trigger a meltdown of the ascii art
 
       case 'exit':
         window.close()
