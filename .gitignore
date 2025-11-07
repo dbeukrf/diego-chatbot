@@ -53,3 +53,10 @@ uv.lock
 
 # Personal profile data (keep local but don't share)
 data/diego_ai_profile.md
+data/professional_summary.md
+data/projects.md
+data/challenges.md
+data/work_experience.md
+data/goals.md
+data/awards.md
+data/hobbies.md
